@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { InventarioService } from './inventario.service';
 import { CreateInventarioRequestDto } from './dto/create-inventario-request.dto';
 import { UpdateInventarioRequestDto } from './dto/update-inventario-request.dto';
+import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @Controller('inventario')
 export class InventarioController {
@@ -17,9 +18,15 @@ export class InventarioController {
     return this.inventarioService.findAll();
   }
 
+
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.inventarioService.findOne(+id);
+  @ApiOperation({ summary: 'Obtener detalles de un inventario', description: 'Obtiene los detalles de un inventario específico mediante su ID.',})
+  @ApiParam({ name: 'id', required: true, description: 'Id del inventario' })
+  @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
+  @ApiNotFoundResponse({ description: 'Inventario no encontrado.' })
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.inventarioService.findOne(id);
   }
 
   @Patch(':id')
