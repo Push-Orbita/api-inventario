@@ -4,6 +4,7 @@
 /build
 
 /.env
+/mysqldata
 
 # Logs
 logs
