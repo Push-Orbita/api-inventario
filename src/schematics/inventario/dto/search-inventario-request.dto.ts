@@ -5,7 +5,7 @@ import { BaseSearchDto } from 'src/common/dto/base-search.dto';
 
 export class SearchInventarioRequestDto extends BaseSearchDto {
 
-    @ApiProperty({ description: 'Codigo del Cliente', required: false })
+    @ApiProperty({ description: 'Codigo del Inventario', required: false })
     @IsString()
     @IsOptional()
     codigo: string;
