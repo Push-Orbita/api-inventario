@@ -1,22 +1,21 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { Expose } from "class-transformer";
+
+import { CommonDTO } from "src/common/dto/common.dto";
 
 
-export class CreateInventarioRequestDto {
+export class InventarioDTO extends CommonDTO {
 
     @ApiProperty({ description: 'Codigo del inventario', type: String, required: true })
-    @IsString()
-    @IsNotEmpty()
+    @Expose()
     codigo: string;
 
     @ApiProperty({ description: 'Nombre del inventario', type: String })
-    @IsString()
-    @IsNotEmpty()
+    @Expose()
     nombre: string;
 
     @ApiProperty({ description: 'Modelo del inventario', type: String })
-    @IsString()
-    @MinLength(3)
+    @Expose()
     modelo: string;
-    
+
 }

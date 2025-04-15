@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSourceConfig } from './config/typeorm/data-source-local';
+import { DataSourceConfig } from './config/typeorm/data-source';
 import { InventarioModule } from './schematics/inventario/inventario.module';
 
 @Module({

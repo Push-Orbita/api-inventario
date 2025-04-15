@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsOptional } from 'class-validator';
 
 export class CommonDTO {
     @ApiProperty({
         description: 'Id de la entidad a insertar/modificar',
-        type: String,
+        type: Number,
     })
-    @IsString()
+    @IsNumber()
     @IsOptional()
     @Expose()
-    id: string;
+    id: number;
 
     @ApiProperty({
         description: 'Fecha de actualización',
