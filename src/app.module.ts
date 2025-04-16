@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceConfig } from './config/typeorm/data-source';
 import { InventarioModule } from './schematics/inventario/inventario.module';
+import { UnidadModule } from './schematics/unidad/unidad.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { InventarioModule } from './schematics/inventario/inventario.module';
       ...DataSourceConfig
     }),
 
-    InventarioModule
+    InventarioModule,
+    UnidadModule
   ],
   controllers: [],
   providers: [],

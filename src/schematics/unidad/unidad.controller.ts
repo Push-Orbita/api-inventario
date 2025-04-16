@@ -19,13 +19,13 @@ export class UnidadController {
   
   @Get('search')
   @ApiOperation({
-    summary: 'Buscar inventarios',
+    summary: 'Buscar unidades',
     description:
-      'Permite buscar inventarios según los criterios especificados en la solicitud.',
+      'Permite buscar unidades según los criterios especificados en la solicitud.',
   })
   @ApiOkResponse({
     type: PageDto,
-    description: 'Lista paginada de inventarios encontrada.',
+    description: 'Lista paginada de unidades encontrada.',
   })
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
   async search(@Query() request: SearchUnidadRequestDto): Promise<PageDto<UnidadDTO>> {
@@ -35,16 +35,16 @@ export class UnidadController {
 
   @Post()
   @ApiOperation({
-    summary: 'Crear un nuevo unidad',
-    description: 'Permite crear un nuevo unidad con los datos proporcionados.',
+    summary: 'Crear una nueva unidad',
+    description: 'Permite crear una nueva unidad con los datos proporcionados.',
   })
   @ApiBody({
     type: CreateUnidadRequestDto,
-    description: 'Datos del nuevo unidad a crear.',
+    description: 'Datos de la nueva unidad a crear.',
   })
   @ApiOkResponse({
     type: UnidadDTO,
-    description: 'Unidad creado correctamente.',
+    description: 'Unidad creada correctamente.',
   })
   @ApiBadRequestResponse({
     description: 'Solicitud incorrecta o datos inválidos.',
@@ -56,28 +56,28 @@ export class UnidadController {
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Obtener detalles de un unidad',
-    description: 'Obtiene los detalles de un unidad específico mediante su ID.',
+    summary: 'Obtener detalles de una unidad',
+    description: 'Obtiene los detalles de una unidad específica mediante su ID.',
   })
   @ApiParam({
     name: 'id',
     required: true,
-    description: 'Id del unidad'
+    description: 'Id de la unidad'
   })
   @ApiOkResponse({
     type: UnidadDTO,
-    description: 'Detalles del unidad obtenidos correctamente.',
+    description: 'Detalles de la unidad obtenidos correctamente.',
   })
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
-  @ApiNotFoundResponse({ description: 'Unidad no encontrado.' })
+  @ApiNotFoundResponse({ description: 'Unidad no encontrada.' })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<UnidadDTO> {
     return this.inventarioService.findById(id);
   }
 
   @Patch(':id')
   @ApiOperation({
-    summary: 'Actualizar un unidad existente',
-    description: 'Permite actualizar los datos de un unidad existente mediante su ID.',
+    summary: 'Actualizar una unidad existente',
+    description: 'Permite actualizar los datos de una unidad existente mediante su ID.',
   })
   @ApiParam({
     name: 'id',
@@ -90,29 +90,29 @@ export class UnidadController {
   })
   @ApiOkResponse({
     type: UnidadDTO,
-    description: 'Unidad actualizado correctamente.',
+    description: 'Unidad actualizada correctamente.',
   })
   @ApiBadRequestResponse({
     description: 'Solicitud incorrecta o datos inválidos.',
   })
-  @ApiNotFoundResponse({ description: 'Unidad no encontrado.' })
+  @ApiNotFoundResponse({ description: 'Unidad no encontrada.' })
   update(@Param('id', ParseIntPipe) id: number, @Body() updateUnidadRequestDto: UpdateUnidadRequestDto): Promise<UnidadDTO> {
     return this.inventarioService.update(id, updateUnidadRequestDto);
   }
 
   @Delete(':id')
   @ApiOperation({
-    summary: 'Eliminar un unidad',
-    description: 'Permite eliminar un unidad existente mediante su ID.',
+    summary: 'Eliminar una unidad',
+    description: 'Permite eliminar una unidad existente mediante su ID.',
   })
   @ApiParam({
     name: 'id',
     required: true,
-    description: 'ID del unidad a eliminar.',
+    description: 'ID de la unidad a eliminar.',
   })
-  @ApiOkResponse({ description: 'unidad eliminado correctamente.' })
+  @ApiOkResponse({ description: 'unidad eliminada correctamente.' })
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
-  @ApiNotFoundResponse({ description: 'unidad no encontrado.' })
+  @ApiNotFoundResponse({ description: 'unidad no encontrada.' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.inventarioService.remove(id);
   }

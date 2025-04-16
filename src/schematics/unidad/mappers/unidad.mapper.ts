@@ -7,6 +7,7 @@ import { CreateUnidadRequestDto } from '../dto/create-unidad-request.dto';
 import { UpdateUnidadRequestDto } from '../dto/update-unidad-request.dto';
 import { PageDto } from 'src/common/dto/page.dto';
 import { SearchUnidadRequestDto } from '../dto/search-unidad-request.dto';
+import { Inventario } from 'src/schematics/inventario/entities/inventario.entity';
 
 
 @Injectable()
@@ -35,16 +36,17 @@ export class UnidadMapper {
 
   async createDTO2Entity(request: CreateUnidadRequestDto): Promise<Unidad> {
     const newUnidad: Unidad = new Unidad();
-    newUnidad.codigo = request.codigo;
-    newUnidad.nombre = request.nombre;
-    newUnidad.modelo = request.modelo;
+    newUnidad.numeroSerie = request.numeroSerie;
+    newUnidad.estado = request.estado;
+    newUnidad.ubicacionActual = request.ubicacionActual;
+    newUnidad.inventario = Inventario.fromId(request.inventario);
     return newUnidad;
   }
 
   async updateDTO2Entity(editUnidad: Unidad, request: UpdateUnidadRequestDto): Promise<Unidad> {
-    request.codigo ? (editUnidad.codigo = request.codigo) : null;
-    request.nombre ? (editUnidad.nombre = request.nombre) : null;
-    request.modelo ? (editUnidad.modelo = request.modelo) : null;
+    request.numeroSerie ? (editUnidad.numeroSerie = request.numeroSerie) : null;
+    request.estado ? (editUnidad.estado = request.estado) : null;
+    request.ubicacionActual ? (editUnidad.ubicacionActual = request.ubicacionActual) : null;
     return editUnidad;
   }
 }

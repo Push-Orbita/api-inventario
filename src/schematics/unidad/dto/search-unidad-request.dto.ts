@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { BaseSearchDto } from 'src/common/dto/base-search.dto';
 import { TipoEstadoEnum } from 'src/common/enums/tipo-estado.enum';
@@ -22,5 +23,15 @@ export class SearchUnidadRequestDto extends BaseSearchDto {
     @IsString()
     @IsOptional()
     ubicacionActual: string;
+
+
+    @ApiProperty({
+        description: 'ID del inventario',
+        type: Number,
+        required: false,
+    })
+    @Type(() => Number)
+    @IsOptional()
+    inventario: number;
 
 }

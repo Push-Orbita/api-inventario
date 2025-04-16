@@ -18,21 +18,27 @@ export class UnidadRepository extends Repository<Unidad> {
         const queryBuilder: SelectQueryBuilder<Unidad> =
             this.dataSource.createQueryBuilder(Unidad, 'unidad')
 
-        if (request.codigo) {
-            queryBuilder.andWhere('unidad.codigo = :codigo', {
-                codigo: request.codigo,
+        if (request.numeroSerie) {
+            queryBuilder.andWhere('unidad.numeroSerie = :numeroSerie', {
+                numeroSerie: request.numeroSerie,
             });
         }
 
-        if (request.nombre) {
-            queryBuilder.andWhere('unidad.nombre = :nombre', {
-                nombre: request.nombre,
+        if (request.estado) {
+            queryBuilder.andWhere('unidad.estado = :estado', {
+                estado: request.estado,
             });
         }
 
-        if (request.modelo) {
-            queryBuilder.andWhere('unidad.modelo = :modelo', {
-                modelo: request.modelo,
+        if (request.ubicacionActual) {
+            queryBuilder.andWhere('unidad.ubicacionActual = :ubicacionActual', {
+                ubicacionActual: request.ubicacionActual,
+            });
+        }
+
+        if (request.inventario) {
+            queryBuilder.andWhere('unidad.inventario = :inventario', {
+                inventario: request.inventario,
             });
         }
 

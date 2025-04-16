@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
 import { TipoEstadoEnum } from "src/common/enums/tipo-estado.enum";
 
 
@@ -18,5 +18,13 @@ export class CreateUnidadRequestDto {
     @IsString()
     @MinLength(3)
     ubicacionActual: string;
+
+    @ApiProperty({
+        description: 'ID del inventario de la unidad',
+        type: Number,
+    })
+    @IsNumber()
+    @IsNotEmpty()
+    inventario: number;
 
 }

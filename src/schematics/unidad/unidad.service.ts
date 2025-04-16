@@ -36,7 +36,8 @@ export class UnidadService {
     try {
 
       const unidad = await this.unidadRepository.findOne({
-        where: { id: id }
+        where: { id: id },
+        relations: ['inventario'],
       });
 
       if (!unidad) {
@@ -80,6 +81,7 @@ export class UnidadService {
 
   public async searchUnidad(request: SearchUnidadRequestDto): Promise<PageDto<UnidadDTO>> {
     try {
+      console.log(request);
       const unidadPage = await this.unidadRepository.search(request);
       return this.unidadMapper.page2Dto(request, unidadPage);
     } catch (error) {
