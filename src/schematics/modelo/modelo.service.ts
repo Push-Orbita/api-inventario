@@ -112,7 +112,7 @@ export class ModeloService {
       modelo.nombre += `_(deleted_${date})`;
       await this.modeloRepository.save(modelo);
       await this.modeloRepository.softRemove(modelo);
-      return 'Modelo eliminada';
+      return 'Modelo eliminado';
 
     } catch (error) {
       throw new BadRequestException(`Error al eliminar modelo: ${error.message}`);

@@ -14,23 +14,23 @@ import { SearchCategoriaRequestDto } from './dto/search-categoria-request.dto';
 @Controller('categoria')
 export class CategoriaController {
 
-  constructor(private readonly marcaService: CategoriaService) { }
+  constructor(private readonly categoriaService: CategoriaService) { }
 
   
   @Get('search')
   @ApiOperation({
-    summary: 'Buscar marcas',
+    summary: 'Buscar categorias',
     description:
-      'Permite buscar marcas según los criterios especificados en la solicitud.',
+      'Permite buscar categorias según los criterios especificados en la solicitud.',
   })
   @ApiOkResponse({
     type: PageDto,
-    description: 'Lista paginada de marcas encontrada.',
+    description: 'Lista paginada de categorias encontrada.',
   })
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
   async search(@Query() request: SearchCategoriaRequestDto): Promise<PageDto<CategoriaDTO>> {
     const req = plainToInstance(SearchCategoriaRequestDto, request);
-    return await this.marcaService.searchCategoria(req);
+    return await this.categoriaService.searchCategoria(req);
   }
 
   @Post()
@@ -50,7 +50,7 @@ export class CategoriaController {
     description: 'Solicitud incorrecta o datos inválidos.',
   })
   create(@Body() createCategoriaRequestDto: CreateCategoriaRequestDto): Promise<CategoriaDTO> {
-    return this.marcaService.create(createCategoriaRequestDto);
+    return this.categoriaService.create(createCategoriaRequestDto);
   }
 
 
@@ -71,7 +71,7 @@ export class CategoriaController {
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
   @ApiNotFoundResponse({ description: 'categoria no encontrada.' })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<CategoriaDTO> {
-    return this.marcaService.findById(id);
+    return this.categoriaService.findById(id);
   }
 
   @Patch(':id')
@@ -97,7 +97,7 @@ export class CategoriaController {
   })
   @ApiNotFoundResponse({ description: 'categoria no encontrada.' })
   update(@Param('id', ParseIntPipe) id: number, @Body() updateCategoriaRequestDto: UpdateCategoriaRequestDto): Promise<CategoriaDTO> {
-    return this.marcaService.update(id, updateCategoriaRequestDto);
+    return this.categoriaService.update(id, updateCategoriaRequestDto);
   }
 
   @Delete(':id')
@@ -114,7 +114,7 @@ export class CategoriaController {
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
   @ApiNotFoundResponse({ description: 'categoria no encontrada.' })
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.marcaService.remove(id);
+    return this.categoriaService.remove(id);
   }
 
 }

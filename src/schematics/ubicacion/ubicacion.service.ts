@@ -72,7 +72,7 @@ export class UbicacionService {
   public async update(id: number, updateUbicacionRequestDto: UpdateUbicacionRequestDto): Promise<UbicacionDTO> {
 
     const ubicacion = await this.ubicacionRepository.findOne({ where: { id: id } });
-    if (!ubicacion) throw new NotFoundException(`No se encontró el ubicacion con id ${id}`);
+    if (!ubicacion) throw new NotFoundException(`No se encontró la ubicacion con id ${id}`);
 
     try {
       const existingUbicacion = await this.ubicacionRepository.findOne({

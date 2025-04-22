@@ -59,7 +59,7 @@ export class MarcaService {
       });
 
       if (!marca) {
-        throw new NotFoundException(`No se encontró el marca con id ${id}`);
+        throw new NotFoundException(`No se encontró la marca con id ${id}`);
       }
       return this.marcaMapper.entity2DTO(marca);
     } catch (error) {
@@ -72,7 +72,7 @@ export class MarcaService {
   public async update(id: number, updateMarcaRequestDto: UpdateMarcaRequestDto): Promise<MarcaDTO> {
 
     const marca = await this.marcaRepository.findOne({ where: { id: id } });
-    if (!marca) throw new NotFoundException(`No se encontró el marca con id ${id}`);
+    if (!marca) throw new NotFoundException(`No se encontró la marca con id ${id}`);
 
     try {
       const existingMarca = await this.marcaRepository.findOne({
@@ -103,7 +103,7 @@ export class MarcaService {
   public async remove(id: number) {
 
     const marca = await this.marcaRepository.findOne({ where: { id: id } });
-    if (!marca) throw new NotFoundException(`No se encontró el marca con id ${id}`);
+    if (!marca) throw new NotFoundException(`No se encontró la marca con id ${id}`);
 
     try {
 

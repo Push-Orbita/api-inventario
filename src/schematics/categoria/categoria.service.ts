@@ -59,7 +59,7 @@ export class CategoriaService {
       });
 
       if (!categoria) {
-        throw new NotFoundException(`No se encontró el categoria con id ${id}`);
+        throw new NotFoundException(`No se encontró la categoria con id ${id}`);
       }
       return this.categoriaMapper.entity2DTO(categoria);
     } catch (error) {
@@ -72,7 +72,7 @@ export class CategoriaService {
   public async update(id: number, updateCategoriaRequestDto: UpdateCategoriaRequestDto): Promise<CategoriaDTO> {
 
     const categoria = await this.categoriaRepository.findOne({ where: { id: id } });
-    if (!categoria) throw new NotFoundException(`No se encontró el categoria con id ${id}`);
+    if (!categoria) throw new NotFoundException(`No se encontró la categoria con id ${id}`);
 
     try {
       const existingCategoria = await this.categoriaRepository.findOne({
@@ -103,7 +103,7 @@ export class CategoriaService {
   public async remove(id: number) {
 
     const categoria = await this.categoriaRepository.findOne({ where: { id: id } });
-    if (!categoria) throw new NotFoundException(`No se encontró el categoria con id ${id}`);
+    if (!categoria) throw new NotFoundException(`No se encontró la categoria con id ${id}`);
 
     try {
 

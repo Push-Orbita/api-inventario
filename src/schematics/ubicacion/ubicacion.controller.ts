@@ -14,23 +14,23 @@ import { SearchUbicacionRequestDto } from './dto/search-ubicacion-request.dto';
 @Controller('ubicacion')
 export class UbicacionController {
 
-  constructor(private readonly marcaService: UbicacionService) { }
+  constructor(private readonly ubicacionService: UbicacionService) { }
 
   
   @Get('search')
   @ApiOperation({
-    summary: 'Buscar marcas',
+    summary: 'Buscar ubicaciones',
     description:
-      'Permite buscar marcas según los criterios especificados en la solicitud.',
+      'Permite buscar ubicaciones según los criterios especificados en la solicitud.',
   })
   @ApiOkResponse({
     type: PageDto,
-    description: 'Lista paginada de marcas encontrada.',
+    description: 'Lista paginada de ubicaciones encontrada.',
   })
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
   async search(@Query() request: SearchUbicacionRequestDto): Promise<PageDto<UbicacionDTO>> {
     const req = plainToInstance(SearchUbicacionRequestDto, request);
-    return await this.marcaService.searchUbicacion(req);
+    return await this.ubicacionService.searchUbicacion(req);
   }
 
   @Post()
@@ -50,7 +50,7 @@ export class UbicacionController {
     description: 'Solicitud incorrecta o datos inválidos.',
   })
   create(@Body() createUbicacionRequestDto: CreateUbicacionRequestDto): Promise<UbicacionDTO> {
-    return this.marcaService.create(createUbicacionRequestDto);
+    return this.ubicacionService.create(createUbicacionRequestDto);
   }
 
 
@@ -71,7 +71,7 @@ export class UbicacionController {
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
   @ApiNotFoundResponse({ description: 'ubicacion no encontrada.' })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<UbicacionDTO> {
-    return this.marcaService.findById(id);
+    return this.ubicacionService.findById(id);
   }
 
   @Patch(':id')
@@ -97,7 +97,7 @@ export class UbicacionController {
   })
   @ApiNotFoundResponse({ description: 'ubicacion no encontrada.' })
   update(@Param('id', ParseIntPipe) id: number, @Body() updateUbicacionRequestDto: UpdateUbicacionRequestDto): Promise<UbicacionDTO> {
-    return this.marcaService.update(id, updateUbicacionRequestDto);
+    return this.ubicacionService.update(id, updateUbicacionRequestDto);
   }
 
   @Delete(':id')
@@ -114,7 +114,7 @@ export class UbicacionController {
   @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
   @ApiNotFoundResponse({ description: 'ubicacion no encontrada.' })
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.marcaService.remove(id);
+    return this.ubicacionService.remove(id);
   }
 
 }
