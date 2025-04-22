@@ -12,6 +12,6 @@ export class CreateTipoRequestDto {
 
     @ApiProperty({ description: 'Descripción del tipo', type: String, nullable: true })
     @IsString()
-    descipcion: string;
+    descripcion: string;
     
 }
