@@ -1,5 +1,7 @@
 
 export enum TipoEstadoEnum {
-    ACTIVO = 'ACTIVO',
-    INACTIVO = 'INACTIVO'
+    DISPONIBLE = 'DISPONIBLE',
+    EN_USO = 'EN USO',
+    EN_REPARACION = 'EN REPARACION',
+    FUERA_DE_SERVICIO = 'FUERA DE SERVICIO',
 }

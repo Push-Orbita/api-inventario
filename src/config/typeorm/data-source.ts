@@ -17,7 +17,7 @@ export const DataSourceConfig: DataSourceOptions = {
         process.env.NODE_ENV === 'production'
             ? ['dist/migration/*.js']
             : [__dirname + '/../../migration/*{.ts,.js}'],
-    logging: true,
+    logging: false,
     synchronize: process.env.NODE_ENV !== 'production',
 }
 

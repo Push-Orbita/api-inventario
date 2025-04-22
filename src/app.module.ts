@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceConfig } from './config/typeorm/data-source';
-import { InventarioModule } from './schematics/inventario/inventario.module';
-import { UnidadModule } from './schematics/unidad/unidad.module';
+import { ProductoModule } from './schematics/producto/producto.module';
+import { ModeloModule } from './schematics/modelo/modelo.module';
+import { MarcaModule } from './schematics/marca/marca.module';
+import { TipoModule } from './schematics/tipo/tipo.module';
 
 @Module({
   imports: [
@@ -13,8 +15,10 @@ import { UnidadModule } from './schematics/unidad/unidad.module';
       ...DataSourceConfig
     }),
 
-    InventarioModule,
-    UnidadModule
+    ProductoModule,
+    ModeloModule,
+    MarcaModule,
+    TipoModule
   ],
   controllers: [],
   providers: [],
