@@ -10,6 +10,7 @@ import { MarcaModule } from './schematics/marca/marca.module';
 import { TipoModule } from './schematics/tipo/tipo.module';
 import { CategoriaModule } from './schematics/categoria/categoria.module';
 import { UbicacionModule } from './schematics/ubicacion/ubicacion.module';
+import { UnidadModule } from './schematics/unidad/unidad.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { UbicacionModule } from './schematics/ubicacion/ubicacion.module';
     MarcaModule,
     TipoModule,
     CategoriaModule,
-    UbicacionModule
+    UbicacionModule,
+    UnidadModule
   ],
   controllers: [],
   providers: [],

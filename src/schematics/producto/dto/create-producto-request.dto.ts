@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
 
 
@@ -11,6 +12,7 @@ export class CreateProductoRequestDto {
 
     @ApiProperty({ description: 'Fecha de adquisición del producto', type: Date })
     @IsDate()
+    @Type(() => Date) // <- esto convierte el string ISO en un objeto Date
     fechaAdquisicion: Date;
 
     @ApiProperty({ description: 'Caracteristicas del producto', type: String })
