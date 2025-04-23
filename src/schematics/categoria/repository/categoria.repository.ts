@@ -18,6 +18,11 @@ export class CategoriaRepository extends Repository<Categoria> {
         const queryBuilder: SelectQueryBuilder<Categoria> =
             this.dataSource.createQueryBuilder(Categoria, 'categoria')
 
+        if (request.id) {
+            queryBuilder.andWhere('categoria.id = :id', {
+                id: request.id,
+            });
+        }
 
         if (request.nombre) {
             queryBuilder.andWhere('categoria.nombre = :nombre', {
@@ -27,13 +32,7 @@ export class CategoriaRepository extends Repository<Categoria> {
 
         if (request.descripcion) {
             queryBuilder.andWhere('categoria.descripcion = :descripcion', {
-              descripcion: request.descripcion,
-            });
-          }
-
-        if (request.id) {
-            queryBuilder.andWhere('categoria.id = :id', {
-                id: request.id,
+                descripcion: request.descripcion,
             });
         }
 

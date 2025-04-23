@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Not } from 'typeorm';
 
 import { ERRORS } from 'src/common/errors/error-codes';
@@ -36,7 +36,6 @@ export class CategoriaService {
       });
     }
 
-
     try {
       const newCategoria = await this.categoriaMapper.createDTO2Entity(request);
       await this.categoriaRepository.save(newCategoria);
@@ -59,20 +58,33 @@ export class CategoriaService {
       });
 
       if (!categoria) {
-        throw new NotFoundException(`No se encontró la categoria con id ${id}`);
+        throw new NotFoundException({
+          code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+          message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+          details: `ID: ${id}`,
+        });
       }
       return this.categoriaMapper.entity2DTO(categoria);
     } catch (error) {
-      throw new BadRequestException(
-        `Error al buscar categoria: ${error.message}`,
-      );
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
     }
   }
 
   public async update(id: number, updateCategoriaRequestDto: UpdateCategoriaRequestDto): Promise<CategoriaDTO> {
 
     const categoria = await this.categoriaRepository.findOne({ where: { id: id } });
-    if (!categoria) throw new NotFoundException(`No se encontró la categoria con id ${id}`);
+
+    if (!categoria) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
 
     try {
       const existingCategoria = await this.categoriaRepository.findOne({
@@ -88,7 +100,9 @@ export class CategoriaService {
       }
 
       const updateCategoria = await this.categoriaMapper.updateDTO2Entity(categoria, updateCategoriaRequestDto);
+
       await this.categoriaRepository.save(updateCategoria);
+
       const categoriaUpdate = await this.categoriaMapper.entity2DTO(updateCategoria);
       return categoriaUpdate;
     } catch (error) {
@@ -102,22 +116,34 @@ export class CategoriaService {
 
   public async remove(id: number) {
 
-    const categoria = await this.categoriaRepository.findOne({ where: { id: id } });
-    if (!categoria) throw new NotFoundException(`No se encontró la categoria con id ${id}`);
+    const categoria = await this.categoriaRepository.findOne({
+      where: { id: id }
+    });
+
+    if (!categoria) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
 
     try {
 
       const date = new Date().getTime().toString().slice(-6);
+
       categoria.nombre += `_(deleted_${date})`;
+      categoria.descripcion += `_(deleted_${date})`;
+
       await this.categoriaRepository.save(categoria);
       await this.categoriaRepository.softRemove(categoria);
       return 'Categoria eliminada';
 
     } catch (error) {
-      throw new BadRequestException({
-        code: ERRORS.VALIDATION.INVALID_INPUT.CODE,
-        message: ERRORS.VALIDATION.INVALID_INPUT.MESSAGE,
-        details: `Detalles: ${error.message}`,
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
       });
     }
   }
@@ -127,10 +153,10 @@ export class CategoriaService {
       const categoriaPage = await this.categoriaRepository.search(request);
       return this.categoriaMapper.page2Dto(request, categoriaPage);
     } catch (error) {
-      throw new BadRequestException({
-        code: ERRORS.VALIDATION.INVALID_INPUT.CODE,
-        message: ERRORS.VALIDATION.INVALID_INPUT.MESSAGE,
-        details: `Detalles: ${error.message}`,
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
       });
     }
   }

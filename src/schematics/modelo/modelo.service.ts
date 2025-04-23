@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Not } from 'typeorm';
 
 import { PageDto } from 'src/common/dto/page.dto';
@@ -59,35 +59,46 @@ export class ModeloService {
       });
 
       if (!modelo) {
-        throw new NotFoundException(`No se encontró el modelo con id ${id}`);
+        throw new NotFoundException({
+          code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+          message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+          details: `ID: ${id}`,
+        });
       }
       return this.modeloMapper.entity2DTO(modelo);
     } catch (error) {
-      throw new BadRequestException(
-        `Error al buscar modelo: ${error.message}`,
-      );
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
     }
   }
 
   public async update(id: number, updateModeloRequestDto: UpdateModeloRequestDto): Promise<ModeloDTO> {
 
     const modelo = await this.modeloRepository.findOne({ where: { id: id } });
+    if (!modelo) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
+
+    const existsModelo = await this.modeloRepository.findOne({
+      where: { nombre: updateModeloRequestDto.nombre, id: Not(id) }
+    });
+
+    if (existsModelo) {
+      throw new BadRequestException({
+        code: ERRORS.ENTITY.NAME_ALREADY_EXISTS.CODE,
+        message: ERRORS.ENTITY.NAME_ALREADY_EXISTS.MESSAGE,
+        details: `Modelo: ${existsModelo.nombre}`,
+      });
+    }
 
     try {
-
-      const existsModelo = await this.modeloRepository.findOne({
-        where: { nombre: updateModeloRequestDto.nombre, id: Not(id) }
-      })
-
-      if (existsModelo) {
-        throw new BadRequestException({
-          code: ERRORS.ENTITY.NAME_ALREADY_EXISTS.CODE,
-          message: ERRORS.ENTITY.NAME_ALREADY_EXISTS.MESSAGE,
-          details: `Modelo: ${existsModelo.nombre}`,
-        });
-      }
-
-      if (!modelo) throw new NotFoundException(`No se encontró el modelo con id ${id}`);
       const updateModelo = await this.modeloMapper.updateDTO2Entity(modelo, updateModeloRequestDto);
       await this.modeloRepository.save(updateModelo);
       const modeloUpdate = await this.modeloMapper.entity2DTO(updateModelo);
@@ -104,18 +115,30 @@ export class ModeloService {
   public async remove(id: number) {
 
     const modelo = await this.modeloRepository.findOne({ where: { id: id } });
-    if (!modelo) throw new NotFoundException(`No se encontró el modelo con id ${id}`);
+    if (!modelo) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
 
     try {
 
       const date = new Date().getTime().toString().slice(-6);
+
       modelo.nombre += `_(deleted_${date})`;
+
       await this.modeloRepository.save(modelo);
       await this.modeloRepository.softRemove(modelo);
       return 'Modelo eliminado';
 
     } catch (error) {
-      throw new BadRequestException(`Error al eliminar modelo: ${error.message}`);
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
     }
   }
 
@@ -124,7 +147,11 @@ export class ModeloService {
       const modeloPage = await this.modeloRepository.search(request);
       return this.modeloMapper.page2Dto(request, modeloPage);
     } catch (error) {
-      throw new BadRequestException(`Error al buscar modelos: ${error.message}`);
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
     }
   }
 }

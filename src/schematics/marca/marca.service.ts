@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Not } from 'typeorm';
 
 import { ERRORS } from 'src/common/errors/error-codes';
@@ -59,20 +59,32 @@ export class MarcaService {
       });
 
       if (!marca) {
-        throw new NotFoundException(`No se encontró la marca con id ${id}`);
+        throw new NotFoundException({
+          code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+          message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+          details: `ID: ${id}`,
+        });
       }
       return this.marcaMapper.entity2DTO(marca);
     } catch (error) {
-      throw new BadRequestException(
-        `Error al buscar marca: ${error.message}`,
-      );
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
     }
   }
 
   public async update(id: number, updateMarcaRequestDto: UpdateMarcaRequestDto): Promise<MarcaDTO> {
 
     const marca = await this.marcaRepository.findOne({ where: { id: id } });
-    if (!marca) throw new NotFoundException(`No se encontró la marca con id ${id}`);
+    if (!marca) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
 
     try {
       const existingMarca = await this.marcaRepository.findOne({
@@ -88,7 +100,9 @@ export class MarcaService {
       }
 
       const updateMarca = await this.marcaMapper.updateDTO2Entity(marca, updateMarcaRequestDto);
+
       await this.marcaRepository.save(updateMarca);
+
       const marcaUpdate = await this.marcaMapper.entity2DTO(updateMarca);
       return marcaUpdate;
     } catch (error) {
@@ -103,21 +117,29 @@ export class MarcaService {
   public async remove(id: number) {
 
     const marca = await this.marcaRepository.findOne({ where: { id: id } });
-    if (!marca) throw new NotFoundException(`No se encontró la marca con id ${id}`);
+    if (!marca) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
 
     try {
 
       const date = new Date().getTime().toString().slice(-6);
+
       marca.nombre += `_(deleted_${date})`;
+
       await this.marcaRepository.save(marca);
       await this.marcaRepository.softRemove(marca);
       return 'Marca eliminada';
 
     } catch (error) {
-      throw new BadRequestException({
-        code: ERRORS.VALIDATION.INVALID_INPUT.CODE,
-        message: ERRORS.VALIDATION.INVALID_INPUT.MESSAGE,
-        details: `Detalles: ${error.message}`,
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
       });
     }
   }

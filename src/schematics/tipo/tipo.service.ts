@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Not } from 'typeorm';
 import { ERRORS } from 'src/common/errors/error-codes';
 
@@ -32,7 +32,7 @@ export class TipoService {
       throw new BadRequestException({
         code: ERRORS.ENTITY.NAME_ALREADY_EXISTS.CODE,
         message: ERRORS.ENTITY.NAME_ALREADY_EXISTS.MESSAGE,
-        details: `tipo: ${existsTipo.nombre}`,
+        details: `Tipo: ${existsTipo.nombre}`,
       });
     }
 
@@ -58,19 +58,32 @@ export class TipoService {
       });
 
       if (!tipo) {
-        throw new NotFoundException(`No se encontró el tipo con id ${id}`);
+        throw new NotFoundException({
+          code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+          message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+          details: `ID: ${id}`,
+        });
       }
       return this.tipoMapper.entity2DTO(tipo);
     } catch (error) {
-      throw new BadRequestException(
-        `Error al buscar tipo: ${error.message}`,
-      );
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      })
     }
   }
 
   public async update(id: number, updateTipoRequestDto: UpdateTipoRequestDto): Promise<TipoDTO> {
 
     const tipo = await this.tipoRepository.findOne({ where: { id: id } });
+    if (!tipo) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    };
 
     try {
 
@@ -86,7 +99,6 @@ export class TipoService {
         });
       }
 
-      if (!tipo) throw new NotFoundException(`No se encontró el tipo con id ${id}`);
       const updateTipo = await this.tipoMapper.updateDTO2Entity(tipo, updateTipoRequestDto);
       await this.tipoRepository.save(updateTipo);
       const tipoUpdate = await this.tipoMapper.entity2DTO(updateTipo);
@@ -103,18 +115,32 @@ export class TipoService {
   public async remove(id: number) {
 
     const tipo = await this.tipoRepository.findOne({ where: { id: id } });
-    if (!tipo) throw new NotFoundException(`No se encontró el tipo con id ${id}`);
+
+    if (!tipo) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
 
     try {
 
       const date = new Date().getTime().toString().slice(-6);
+
       tipo.nombre += `_(deleted_${date})`;
+      tipo.descripcion += `_(deleted_${date})`;
+
       await this.tipoRepository.save(tipo);
       await this.tipoRepository.softRemove(tipo);
       return 'Tipo eliminado';
 
     } catch (error) {
-      throw new BadRequestException(`Error al eliminar tipo: ${error.message}`);
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
     }
   }
 
@@ -123,7 +149,11 @@ export class TipoService {
       const tipoPage = await this.tipoRepository.search(request);
       return this.tipoMapper.page2Dto(request, tipoPage);
     } catch (error) {
-      throw new BadRequestException(`Error al buscar tipos: ${error.message}`);
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
     }
   }
 }

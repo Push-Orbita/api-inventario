@@ -33,6 +33,7 @@ export class CategoriaController {
     return await this.categoriaService.searchCategoria(req);
   }
 
+  
   @Post()
   @ApiOperation({
     summary: 'Crear una nueva categoria',

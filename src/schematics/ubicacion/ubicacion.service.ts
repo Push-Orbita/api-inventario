@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Not } from 'typeorm';
 
 import { ERRORS } from 'src/common/errors/error-codes';
@@ -36,7 +36,6 @@ export class UbicacionService {
       });
     }
 
-
     try {
       const newUbicacion = await this.ubicacionMapper.createDTO2Entity(request);
       await this.ubicacionRepository.save(newUbicacion);
@@ -59,33 +58,46 @@ export class UbicacionService {
       });
 
       if (!ubicacion) {
-        throw new NotFoundException(`No se encontró la ubicacion con id ${id}`);
+        throw new NotFoundException({
+          code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+          message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+          details: `ID: ${id}`,
+        })
       }
       return this.ubicacionMapper.entity2DTO(ubicacion);
     } catch (error) {
-      throw new BadRequestException(
-        `Error al buscar ubicacion: ${error.message}`,
-      );
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
     }
   }
 
   public async update(id: number, updateUbicacionRequestDto: UpdateUbicacionRequestDto): Promise<UbicacionDTO> {
 
     const ubicacion = await this.ubicacionRepository.findOne({ where: { id: id } });
-    if (!ubicacion) throw new NotFoundException(`No se encontró la ubicacion con id ${id}`);
+    if (!ubicacion) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
+
+    const existingUbicacion = await this.ubicacionRepository.findOne({
+      where: { nombre: updateUbicacionRequestDto.nombre, id: Not(id) },
+    });
+
+    if (existingUbicacion) {
+      throw new BadRequestException({
+        code: ERRORS.ENTITY.NAME_ALREADY_EXISTS.CODE,
+        message: ERRORS.ENTITY.NAME_ALREADY_EXISTS.MESSAGE,
+        details: `Ubicacion: ${existingUbicacion.nombre}`,
+      });
+    }
 
     try {
-      const existingUbicacion = await this.ubicacionRepository.findOne({
-        where: { nombre: updateUbicacionRequestDto.nombre, id: Not(id) },
-      });
-
-      if (existingUbicacion) {
-        throw new BadRequestException({
-          code: ERRORS.ENTITY.NAME_ALREADY_EXISTS.CODE,
-          message: ERRORS.ENTITY.NAME_ALREADY_EXISTS.MESSAGE,
-          details: `Ubicacion: ${existingUbicacion.nombre}`,
-        });
-      }
 
       const updateUbicacion = await this.ubicacionMapper.updateDTO2Entity(ubicacion, updateUbicacionRequestDto);
       await this.ubicacionRepository.save(updateUbicacion);
@@ -103,21 +115,30 @@ export class UbicacionService {
   public async remove(id: number) {
 
     const ubicacion = await this.ubicacionRepository.findOne({ where: { id: id } });
-    if (!ubicacion) throw new NotFoundException(`No se encontró la ubicacion con id ${id}`);
+    if (!ubicacion) {
+      throw new NotFoundException({
+        code: ERRORS.DATABASE.RECORD_NOT_FOUND.CODE,
+        message: ERRORS.DATABASE.RECORD_NOT_FOUND.MESSAGE,
+        details: `ID: ${id}`,
+      });
+    }
 
     try {
 
       const date = new Date().getTime().toString().slice(-6);
+
       ubicacion.nombre += `_(deleted_${date})`;
+      ubicacion.direccion += `_(deleted_${date})`;
+
       await this.ubicacionRepository.save(ubicacion);
       await this.ubicacionRepository.softRemove(ubicacion);
       return 'Ubicacion eliminada';
 
     } catch (error) {
-      throw new BadRequestException({
-        code: ERRORS.VALIDATION.INVALID_INPUT.CODE,
-        message: ERRORS.VALIDATION.INVALID_INPUT.MESSAGE,
-        details: `Detalles: ${error.message}`,
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
       });
     }
   }
