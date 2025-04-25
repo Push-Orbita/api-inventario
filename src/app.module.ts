@@ -11,6 +11,7 @@ import { TipoModule } from './schematics/tipo/tipo.module';
 import { CategoriaModule } from './schematics/categoria/categoria.module';
 import { UbicacionModule } from './schematics/ubicacion/ubicacion.module';
 import { UnidadModule } from './schematics/unidad/unidad.module';
+import { MovimientosModule } from './schematics/movimientos/movimientos.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { UnidadModule } from './schematics/unidad/unidad.module';
     TipoModule,
     CategoriaModule,
     UbicacionModule,
-    UnidadModule
+    UnidadModule,
+    MovimientosModule
   ],
   controllers: [],
   providers: [],
