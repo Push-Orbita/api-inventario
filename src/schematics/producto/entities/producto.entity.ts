@@ -12,9 +12,6 @@ export class Producto extends BaseEntity {
     @Column({ name: 'inve01_nombre', unique: true, nullable: false })
     nombre: string;
 
-    @Column({ name: 'inve01_fecha_adquisicion' })
-    fechaAdquisicion: Date;
-
     @Column({ name: 'inve01_caracteristicas', nullable: true })
     caracteristicas: string;
 

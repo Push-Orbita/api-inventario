@@ -10,11 +10,6 @@ export class CreateProductoRequestDto {
     @IsNotEmpty()
     nombre: string;
 
-    @ApiProperty({ description: 'Fecha de adquisición del producto', type: Date })
-    @IsDate()
-    @Type(() => Date) // <- esto convierte el string ISO en un objeto Date
-    fechaAdquisicion: Date;
-
     @ApiProperty({ description: 'Caracteristicas del producto', type: String })
     @IsString()
     @IsOptional()

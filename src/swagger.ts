@@ -6,6 +6,9 @@ export function setupSwagger(app: INestApplication) {
     const local = {
         url: 'http://localhost:3000',
     }
+    const test = {
+        url: 'http://localhost:3001',
+    }
 
     const config = new DocumentBuilder()
         .setTitle('Documentación del sistema Inventario')
@@ -13,7 +16,7 @@ export function setupSwagger(app: INestApplication) {
         .setVersion('1.0')
         .build();
     
-    config.servers = [local];
+    config.servers = [local, test];
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
 }

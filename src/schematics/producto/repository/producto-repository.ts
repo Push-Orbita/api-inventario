@@ -28,11 +28,7 @@ export class ProductoRepository extends Repository<Producto> {
                 nombre: request.nombre,
             });
         }
-        if (request.fechaAdquisicion) {
-            queryBuilder.andWhere('producto.fechaAdquisicion = :fechaAdquisicion', {
-                fechaAdquisicion: request.fechaAdquisicion,
-            });
-        }
+
         if (request.caracteristicas) {
             queryBuilder.andWhere('producto.caracteristicas = :caracteristicas', {
                 caracteristicas: request.caracteristicas,

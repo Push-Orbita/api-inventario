@@ -15,11 +15,6 @@ export class ProductoDTO extends CommonDTO {
     nombre: string;
 
 
-    @ApiProperty({ description: 'Fecha de adquisición del producto', type: Date })
-    @Expose()
-    fechaAdquisicion: Date;
-
-
     @ApiProperty({ description: 'Caracteristicas del producto', type: String })
     @Expose()
     caracteristicas: string;

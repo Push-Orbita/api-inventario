@@ -15,11 +15,6 @@ export class SearchProductoRequestDto extends BaseSearchDto {
     @IsOptional()
     nombre: string;
 
-    @ApiProperty({ description: 'Fecha de adquisición del producto', required: false })
-    @IsString()
-    @IsOptional()
-    fechaAdquisicion: Date;
-
     @ApiProperty({ description: 'Caracteristicas del producto', required: false })
     @IsString()
     @IsOptional()
