@@ -38,16 +38,22 @@ export class ModeloService {
     }
 
     try {
+
+
       const newModelo = await this.modeloMapper.createDTO2Entity(request);
       await this.modeloRepository.save(newModelo);
+
       const modeloSaved = await this.modeloMapper.entity2DTO(newModelo);
       return modeloSaved;
+
     } catch (error) {
+
       throw new BadRequestException({
         code: ERRORS.VALIDATION.INVALID_INPUT.CODE,
         message: ERRORS.VALIDATION.INVALID_INPUT.MESSAGE,
         details: `Detalles: ${error.message}`,
       });
+      
     }
   }
 
