@@ -10,13 +10,13 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 @Entity({ name:'inve_06_det_unidad'})
 export class Unidad extends BaseEntity{
 
-    @Column({ name: 'inve06_numero_serie', unique: true })
+    @Column({ name: 'inve06_numero_serie', unique: true, nullable: true })
     numero_serie: string
 
     @Column({ name: 'inve06_codigo', unique: true, nullable: false })
     codigo: string
 
-    @Column({ name: 'inve06_cod_barra', unique: true })
+    @Column({ name: 'inve06_cod_barra', unique: true, nullable: true })
     cod_barra: string
 
     @Column({ name: 'inve06_fecha_adquisicion' })
@@ -27,7 +27,7 @@ export class Unidad extends BaseEntity{
         type: 'enum',
         enum: TipoEstadoEnum,
         nullable: false
-      })
+    })
     estado: TipoEstadoEnum;
 
     // RELACIONES:

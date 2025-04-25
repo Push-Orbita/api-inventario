@@ -4,7 +4,7 @@ import { IsDate, IsEnum, IsNumber, IsOptional, IsString } from "class-validator"
 import { TipoEstadoEnum } from 'src/common/enums/tipo-estado.enum';
 
 
-export class CreateUnidadDto {
+export class CreateUnidadRequestDto {
 
     @ApiProperty({ description: 'Numero de serie que viene de fabrica', type: String, required: false })
     @IsString()

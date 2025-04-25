@@ -1,11 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUnidadDto } from './dto/create-unidad.dto';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { CreateUnidadRequestDto } from './dto/create-unidad-request.dto';
 import { UpdateUnidadDto } from './dto/update-unidad.dto';
+import { UnidadDTO } from './dto/unidad.dto';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Unidad } from './entities/unidad.entity';
+import { Producto } from '../producto/entities/producto.entity';
+import { Ubicacion } from '../ubicacion/entities/ubicacion.entity';
 
 @Injectable()
 export class UnidadService {
-  create(createUnidadDto: CreateUnidadDto) {
-    return 'This action adds a new unidad';
+
+  constructor(
+    @InjectRepository(Unidad)
+    private readonly unidadRepository: Repository<Unidad>,
+  ) {}
+
+  public async create(createUnidadDto: CreateUnidadRequestDto){
+
+    try {
+    const unidad = this.unidadRepository.create({
+      ...createUnidadDto,
+      producto: Producto.fromId(createUnidadDto.producto),
+      ubicacion: Ubicacion.fromId(createUnidadDto.ubicacion),
+    });
+
+    await this.unidadRepository.save(unidad);
+    return unidad;
+
+  } catch (error) {
+    console.log(error);
+    throw new InternalServerErrorException('Ayuda!');
+  }
   }
 
   findAll() {
