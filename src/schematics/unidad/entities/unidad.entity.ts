@@ -4,9 +4,6 @@ import { Producto } from "src/schematics/producto/entities/producto.entity";
 import { Ubicacion } from "src/schematics/ubicacion/entities/ubicacion.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
-
-
-
 @Entity({ name:'inve_06_det_unidad'})
 export class Unidad extends BaseEntity{
 

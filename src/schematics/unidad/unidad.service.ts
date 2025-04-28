@@ -1,37 +1,34 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateUnidadRequestDto } from './dto/create-unidad-request.dto';
-import { UpdateUnidadDto } from './dto/update-unidad.dto';
+import { UpdateUnidadRequestDto } from './dto/update-unidad-request.dto';
 import { UnidadDTO } from './dto/unidad.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Unidad } from './entities/unidad.entity';
 import { Producto } from '../producto/entities/producto.entity';
 import { Ubicacion } from '../ubicacion/entities/ubicacion.entity';
+import { UnidadMapper } from './mappers/unidad.mapper';
+import { UnidadRepository } from './repository/unidad-repository';
 
 @Injectable()
 export class UnidadService {
 
   constructor(
-    @InjectRepository(Unidad)
-    private readonly unidadRepository: Repository<Unidad>,
+      private readonly unidadMapper: UnidadMapper,
+      private readonly unidadRepository: UnidadRepository,
   ) {}
 
-  public async create(createUnidadDto: CreateUnidadRequestDto){
+  public async create(request: CreateUnidadRequestDto): Promise<UnidadDTO> {
 
     try {
-    const unidad = this.unidadRepository.create({
-      ...createUnidadDto,
-      producto: Producto.fromId(createUnidadDto.producto),
-      ubicacion: Ubicacion.fromId(createUnidadDto.ubicacion),
-    });
+      const newUnidad = await this.unidadMapper.createDTO2Entity(request);
+      await this.unidadRepository.save(newUnidad);
+      const unidadSaved = await this.unidadMapper.entity2DTO(newUnidad);
+      return unidadSaved;
 
-    await this.unidadRepository.save(unidad);
-    return unidad;
-
-  } catch (error) {
-    console.log(error);
-    throw new InternalServerErrorException('Ayuda!');
-  }
+    } catch (error) {
+      throw new BadRequestException(`Error al intentar crear Unidad: ${error.message}`);
+    }
   }
 
   findAll() {
@@ -42,7 +39,7 @@ export class UnidadService {
     return `This action returns a #${id} unidad`;
   }
 
-  update(id: number, updateUnidadDto: UpdateUnidadDto) {
+  update(id: number, updateUnidadDto: UpdateUnidadRequestDto) {
     return `This action updates a #${id} unidad`;
   }
 
