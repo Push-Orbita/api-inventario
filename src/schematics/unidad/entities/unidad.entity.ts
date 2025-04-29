@@ -32,11 +32,12 @@ export class Unidad extends BaseEntity{
     // Producto
     @ManyToOne(() => Producto)
     @JoinColumn({ name: 'rela_inve01'})
-        producto: Producto;
+    producto: Producto;
 
+    // Ubicacion
     @ManyToOne(() => Ubicacion)
     @JoinColumn({ name: 'rela_inve07'})
-        ubicacion: Ubicacion;
+    ubicacion: Ubicacion;
     
     static fromId(id: number) {
         const unidad = new Unidad();

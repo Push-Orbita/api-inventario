@@ -78,13 +78,33 @@ export class UnidadController {
     return this.unidadService.update(id, updateUnidadRequestDto);
   }
 
-  @Get()
-  findAll() {
-    return this.unidadService.findAll();
+  @Delete(':id')
+  @ApiOperation({
+    summary: 'Eliminar una unidad existente',
+    description: 'Permite eliminar una unidad existente mediante su ID.',
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'ID de la unidad a eliminar.',
+  })
+  @ApiOkResponse({
+    description: 'Unidad eliminada correctamente.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Solicitud incorrecta.',
+  })
+  @ApiNotFoundResponse({
+    description: 'Unidad no encontrada.',
+  })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.unidadService.remove(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.unidadService.remove(+id);
+
+
+  @Get()
+  findAll() {
+    return 'This action returns all unidades';
   }
 }

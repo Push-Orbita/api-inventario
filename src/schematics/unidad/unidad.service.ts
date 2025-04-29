@@ -66,23 +66,18 @@ export class UnidadService {
     }
   }
 
+  public async remove(id: number) {
+    const unidad = await this.unidadRepository.findOne({ where: { id: id } });
+    if (!unidad) throw new NotFoundException(`No se encontró la unidad con id ${id}`);
 
+    try {
 
+      await this.unidadRepository.softRemove(unidad);
+      return { message: `Unidad con id ${id} eliminada correctamente` };
 
-
-
-
-
-
-  findAll() {
-    return `This action returns all unidad`;
+    } catch (error) {
+      throw new BadRequestException(`Error al eliminar unidad: ${error.message}`);
+    }
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} unidad`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} unidad`;
-  }
+  
 }
