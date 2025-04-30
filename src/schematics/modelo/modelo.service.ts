@@ -23,6 +23,19 @@ export class ModeloService {
 
   ) { }
 
+  public async searchModelo(request: SearchModeloRequestDto): Promise<PageDto<ModeloDTO>> {
+    try {
+      const modeloPage = await this.modeloRepository.search(request);
+      return this.modeloMapper.page2Dto(request, modeloPage);
+    } catch (error) {
+      throw new InternalServerErrorException({
+        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
+        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
+        details: error.message,
+      });
+    }
+  }
+
   public async create(request: CreateModeloRequestDto): Promise<ModeloDTO> {
 
     const existsModelo = await this.modeloRepository.findOne({
@@ -139,19 +152,6 @@ export class ModeloService {
       await this.modeloRepository.softRemove(modelo);
       return 'Modelo eliminado';
 
-    } catch (error) {
-      throw new InternalServerErrorException({
-        code: ERRORS.DATABASE.QUERY_FAILED.CODE,
-        message: ERRORS.DATABASE.QUERY_FAILED.MESSAGE,
-        details: error.message,
-      });
-    }
-  }
-
-  public async searchModelo(request: SearchModeloRequestDto): Promise<PageDto<ModeloDTO>> {
-    try {
-      const modeloPage = await this.modeloRepository.search(request);
-      return this.modeloMapper.page2Dto(request, modeloPage);
     } catch (error) {
       throw new InternalServerErrorException({
         code: ERRORS.DATABASE.QUERY_FAILED.CODE,

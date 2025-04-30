@@ -8,16 +8,14 @@ import { PageDto } from "src/common/dto/page.dto";
 @Injectable()
 export class ModeloRepository extends Repository<Modelo> {
     constructor(
-        private readonly dataSource: DataSource
+        private readonly dataSource: DataSource // instancia del motor de conexión de TypeORM.
     ) {
-        super(Modelo, dataSource.createEntityManager())
+        super(Modelo, dataSource.createEntityManager()) // 
     }
 
     async search(request: SearchModeloRequestDto): Promise<PageDto<Modelo>> {
 
-        const queryBuilder: SelectQueryBuilder<Modelo> =
-            this.dataSource.createQueryBuilder(Modelo, 'modelo')
-
+        const queryBuilder: SelectQueryBuilder<Modelo> = this.dataSource.createQueryBuilder(Modelo, 'modelo')
 
         if (request.nombre) {
             queryBuilder.andWhere('modelo.nombre = :nombre', {
@@ -31,8 +29,9 @@ export class ModeloRepository extends Repository<Modelo> {
         }
 
 
-        queryBuilder.orderBy('modelo.nombre', 'ASC');
-        queryBuilder.orderBy('modelo.id', 'DESC');
+        queryBuilder
+            .orderBy('modelo.nombre', 'ASC')
+            .addOrderBy('modelo.id', 'DESC');
 
         const [list, count] = await queryBuilder
             .skip(request.getOffset())

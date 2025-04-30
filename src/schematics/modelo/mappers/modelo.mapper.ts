@@ -14,7 +14,7 @@ export class ModeloMapper {
 
   constructor() {}
 
-  // convierte una instancia de Modelo (entidad) a ModeloDTO
+  // convierte una instancia de la entidad Modelo a un objeto ModeloDTO
   async entity2DTO(modelo: Modelo): Promise<ModeloDTO> {
     const modeloDTO = plainToInstance(ModeloDTO, modelo, { 
       excludeExtraneousValues: true // filtra propiedades que no tengan el decorador @Expose en el DTO
