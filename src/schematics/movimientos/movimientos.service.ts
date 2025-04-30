@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMovimientoDto } from './dto/create-movimiento.dto';
-import { UpdateMovimientoDto } from './dto/update-movimiento.dto';
+import { CreateMovimientoRequestDto } from './dto/create-movimiento-request.dto';
+import { UpdateMovimientoRequestDto } from './dto/update-movimiento-request.dto';
 
 @Injectable()
 export class MovimientosService {
-  create(createMovimientoDto: CreateMovimientoDto) {
+  create(createMovimientoDto: CreateMovimientoRequestDto) {
     return 'This action adds a new movimiento';
   }
 
@@ -16,7 +16,7 @@ export class MovimientosService {
     return `This action returns a #${id} movimiento`;
   }
 
-  update(id: number, updateMovimientoDto: UpdateMovimientoDto) {
+  update(id: number, updateMovimientoDto: UpdateMovimientoRequestDto) {
     return `This action updates a #${id} movimiento`;
   }
 
