@@ -3,8 +3,9 @@ import { UnidadService } from './unidad.service';
 import { CreateUnidadRequestDto } from './dto/create-unidad-request.dto';
 import { UpdateUnidadRequestDto } from './dto/update-unidad-request.dto';
 import { UnidadDTO } from './dto/unidad.dto';
-import { ApiBadRequestResponse, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Unidad')
 @Controller('unidad')
 export class UnidadController {
   constructor(private readonly unidadService: UnidadService) {}
