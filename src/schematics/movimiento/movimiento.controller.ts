@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { MovimientoService } from './movimiento.service';
 import { CreateMovimientoRequestDto } from './dto/create-movimiento-request.dto';
 import { UpdateMovimientoRequestDto } from './dto/update-movimiento-request.dto';
-import { ApiBadRequestResponse, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { MovimientoDTO } from './dto/movimiento.dto';
 
@@ -32,20 +32,62 @@ export class MovimientoController {
     return this.movimientoService.create(createMovimientoRequestDto);
   }
 
-  @Get()
-  findAll() {
-    return this.movimientoService.findAll();
-  }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.movimientoService.findOne(+id);
+  @ApiOperation({
+    summary: 'Obtener un movimiento por ID',
+    description: 'Permite obtener un movimiento específico utilizando su ID.',
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'ID del movimiento a buscar',
+  })
+  @ApiOkResponse({
+    type: MovimientoDTO,
+    description: 'Movimiento encontrado.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Solicitud incorrecta o movimiento no encontrado.',
+  })
+  @ApiNotFoundResponse({
+    description: 'Movimiento no encontrado.',
+  })
+  findOne(@Param('id',ParseIntPipe) id: number): Promise<MovimientoDTO> {
+    return this.movimientoService.findById(id);
   }
 
+
+
   @Patch(':id')
+  @ApiOperation({
+    summary: 'Actualizar un movimiento existente',
+    description: 'Permite actualizar los datos de un movimiento existente utilizando su ID.',
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'ID del movimiento a actualizar.',
+  })
+  @ApiBody({
+    type: UpdateMovimientoRequestDto,
+    description: 'Datos del movimiento a actualizar.',
+  })
+  @ApiOkResponse({
+    type: MovimientoDTO,
+    description: 'Movimiento actualizado correctamente.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Solicitud incorrecta o movimiento no encontrado.',
+  })
+  @ApiNotFoundResponse({
+    description: 'Movimiento no encontrado.',
+  })
   update(@Param('id') id: string, @Body() updateMovimientoDto: UpdateMovimientoRequestDto) {
     return this.movimientoService.update(+id, updateMovimientoDto);
   }
+
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {

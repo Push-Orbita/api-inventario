@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMovimientoRequestDto } from './dto/create-movimiento-request.dto';
 import { UpdateMovimientoRequestDto } from './dto/update-movimiento-request.dto';
 import { MovimientoMapper } from './mappers/movimiento.mapper';
@@ -27,24 +27,38 @@ export class MovimientoService {
     }
   }
 
+  public async findById(id: number): Promise<MovimientoDTO> {
+    try {
 
-  /*
-  create(createMovimientoDto: CreateMovimientoRequestDto) {
-    return 'This action adds a new movimiento';
-  }
-    */
+      const movimiento = await this.movimientoRepository.findOne({
+        where: { id: id }
+      });
 
-  findAll() {
-    return `This action returns all movimientos`;
+      if (!movimiento) {
+        throw new NotFoundException(`No se encontró el movimiento con id ${id}`);
+      }
+      return this.movimientoMapper.entity2DTO(movimiento);
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar movimiento: ${error.message}`,
+      );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} movimiento`;
+  public async update(id: number, updateMovimientoRequestDto: UpdateMovimientoRequestDto): Promise<MovimientoDTO> {
+    try {
+      const movimiento = await this.movimientoRepository.findOne({ where: { id: id } });
+      if (!movimiento) throw new NotFoundException(`No se encontró el movimiento con id ${id}`);
+      const updateMovimiento = await this.movimientoMapper.updateDTO2Entity(movimiento, updateMovimientoRequestDto);
+      await this.movimientoRepository.save(updateMovimiento);
+      const movimientoUpdate = await this.movimientoMapper.entity2DTO(updateMovimiento);
+      return movimientoUpdate;
+    } catch (error) {
+      throw new BadRequestException(`Error al intentar actualizar Movimiento: ${error.message}`);
+    }
   }
 
-  update(id: number, updateMovimientoDto: UpdateMovimientoRequestDto) {
-    return `This action updates a #${id} movimiento`;
-  }
+  
 
   remove(id: number) {
     return `This action removes a #${id} movimiento`;
