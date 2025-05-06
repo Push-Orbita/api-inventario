@@ -83,13 +83,31 @@ export class MovimientoController {
   @ApiNotFoundResponse({
     description: 'Movimiento no encontrado.',
   })
-  update(@Param('id') id: string, @Body() updateMovimientoDto: UpdateMovimientoRequestDto) {
-    return this.movimientoService.update(+id, updateMovimientoDto);
+  update(@Param('id') id: number, @Body() updateMovimientoDto: UpdateMovimientoRequestDto) {
+    return this.movimientoService.update(id, updateMovimientoDto);
   }
 
 
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Eliminar un movimiento existente',
+    description: 'Permite eliminar un movimiento existente utilizando su ID.',
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'ID del movimiento a eliminar.',
+  })
+  @ApiOkResponse({
+    description: 'Movimiento eliminado correctamente.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Solicitud incorrecta o movimiento no encontrado.',
+  })
+  @ApiNotFoundResponse({
+    description: 'Movimiento no encontrado.',
+  })
   remove(@Param('id') id: string) {
     return this.movimientoService.remove(+id);
   }

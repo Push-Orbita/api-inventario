@@ -60,7 +60,18 @@ export class MovimientoService {
 
   
 
-  remove(id: number) {
-    return `This action removes a #${id} movimiento`;
+  public async remove(id: number) {
+
+    const movimiento = await this.movimientoRepository.findOne({ where: { id: id } });
+    if (!movimiento) throw new NotFoundException(`No se encontró el movimiento con id ${id}`);
+
+    try {
+
+      await this.movimientoRepository.softRemove(movimiento);
+      return { message: `Movimiento con id ${id} eliminado correctamente` };
+
+    } catch (error) {
+      throw new BadRequestException(`Error al eliminar movimiento: ${error.message}`);
+    }
   }
 }
