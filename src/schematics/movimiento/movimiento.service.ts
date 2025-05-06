@@ -4,6 +4,8 @@ import { UpdateMovimientoRequestDto } from './dto/update-movimiento-request.dto'
 import { MovimientoMapper } from './mappers/movimiento.mapper';
 import { MovimientoDTO } from './dto/movimiento.dto';
 import { MovimientoRepository } from './repository/movimiento.repository';
+import { SearchMovimientoRequestDto } from './dto/search-movimiento-request.dto';
+import { PageDto } from 'src/common/dto/page.dto';
 
 @Injectable()
 export class MovimientoService {
@@ -58,8 +60,6 @@ export class MovimientoService {
     }
   }
 
-  
-
   public async remove(id: number) {
 
     const movimiento = await this.movimientoRepository.findOne({ where: { id: id } });
@@ -72,6 +72,15 @@ export class MovimientoService {
 
     } catch (error) {
       throw new BadRequestException(`Error al eliminar movimiento: ${error.message}`);
+    }
+  }
+
+  public async searchMovimiento(request: SearchMovimientoRequestDto): Promise<PageDto<MovimientoDTO>> {
+    try {
+      const movimientoPage = await this.movimientoRepository.search(request);
+      return this.movimientoMapper.page2Dto(request, movimientoPage);
+    } catch (error) {
+      throw new BadRequestException(`Error al buscar movimientos: ${error.message}`);
     }
   }
 }

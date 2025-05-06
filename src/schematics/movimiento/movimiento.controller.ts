@@ -1,16 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
 import { MovimientoService } from './movimiento.service';
 import { CreateMovimientoRequestDto } from './dto/create-movimiento-request.dto';
 import { UpdateMovimientoRequestDto } from './dto/update-movimiento-request.dto';
 import { ApiBadRequestResponse, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { MovimientoDTO } from './dto/movimiento.dto';
+import { SearchMovimientoRequestDto } from './dto/search-movimiento-request.dto';
+import { PageDto } from 'src/common/dto/page.dto';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('Movimiento')
 @Controller('movimiento')
 export class MovimientoController {
 
   constructor(private readonly movimientoService: MovimientoService) {}
+
+  @Get('search')
+  @ApiOperation({
+    summary: 'Buscar movimientos',
+    description: 'Permite buscar movimientos según los criterios especificados en la solicitud.',
+  })
+  @ApiOkResponse({
+    type: MovimientoDTO,
+    description: 'Lista de movimientos encontrados.',
+  })
+  @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
+  async search(@Query() request: SearchMovimientoRequestDto): Promise<PageDto<MovimientoDTO>> {
+    const req = plainToInstance(SearchMovimientoRequestDto, request);
+    return await this.movimientoService.searchMovimiento(req);
+  }
+
+
+
 
   @Post()
   @ApiOperation({
@@ -86,7 +107,6 @@ export class MovimientoController {
   update(@Param('id') id: number, @Body() updateMovimientoDto: UpdateMovimientoRequestDto) {
     return this.movimientoService.update(id, updateMovimientoDto);
   }
-
 
 
   @Delete(':id')
