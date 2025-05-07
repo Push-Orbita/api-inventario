@@ -7,11 +7,7 @@ export class UpdateProductoRequestDto {
     @IsString()
     @IsOptional()
     nombre: string;
-
-    @ApiProperty({ description: 'Fecha de adquisición del producto', type: Date, required: false })
-    @IsString()
-    @IsOptional()
-    fechaAdquisicion: Date;
+    
 
     @ApiProperty({ description: 'Caracteristicas del producto', type: String, required: false })
     @IsString()

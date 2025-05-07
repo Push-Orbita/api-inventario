@@ -1,52 +1,83 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateUnidadRequestDto } from './dto/create-unidad-request.dto';
-import { UpdateUnidadDto } from './dto/update-unidad.dto';
+import { UpdateUnidadRequestDto } from './dto/update-unidad-request.dto';
 import { UnidadDTO } from './dto/unidad.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Unidad } from './entities/unidad.entity';
 import { Producto } from '../producto/entities/producto.entity';
 import { Ubicacion } from '../ubicacion/entities/ubicacion.entity';
+import { UnidadMapper } from './mappers/unidad.mapper';
+import { UnidadRepository } from './repository/unidad-repository';
 
 @Injectable()
 export class UnidadService {
 
   constructor(
-    @InjectRepository(Unidad)
-    private readonly unidadRepository: Repository<Unidad>,
+      private readonly unidadMapper: UnidadMapper,
+      private readonly unidadRepository: UnidadRepository,
   ) {}
 
-  public async create(createUnidadDto: CreateUnidadRequestDto){
+  public async create(request: CreateUnidadRequestDto): Promise<UnidadDTO> {
 
     try {
-    const unidad = this.unidadRepository.create({
-      ...createUnidadDto,
-      producto: Producto.fromId(createUnidadDto.producto),
-      ubicacion: Ubicacion.fromId(createUnidadDto.ubicacion),
-    });
+      const newUnidad = await this.unidadMapper.createDTO2Entity(request);
+      await this.unidadRepository.save(newUnidad);
+      const unidadSaved = await this.unidadMapper.entity2DTO(newUnidad);
+      return unidadSaved;
 
-    await this.unidadRepository.save(unidad);
-    return unidad;
-
-  } catch (error) {
-    console.log(error);
-    throw new InternalServerErrorException('Ayuda!');
-  }
+    } catch (error) {
+      throw new BadRequestException(`Error al intentar crear Unidad: ${error.message}`);
+    }
   }
 
-  findAll() {
-    return `This action returns all unidad`;
+  public async findById(id: number): Promise<UnidadDTO> {
+    try {
+      const unidad = await this.unidadRepository.findOne({
+        where: { id: id },
+        relations: {
+          producto: true,
+          ubicacion: true,
+        },
+      });
+      if (!unidad) {
+        throw new NotFoundException(`No se encontró la unidad con id ${id}`);
+      }
+      return this.unidadMapper.entity2DTO(unidad);
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar unidad: ${error.message}`,
+      );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} unidad`;
+  public async update(id: number, updateUnidadRequestDto: UpdateUnidadRequestDto): Promise<UnidadDTO> {
+    try {
+      const unidad = await this.unidadRepository.findOne({ where: { id: id } });
+      if (!unidad) throw new NotFoundException(`No se encontró la unidad con id ${id}`);
+      const updateUnidad = await this.unidadMapper.updateDTO2Entity(unidad, updateUnidadRequestDto);
+      await this.unidadRepository.save(updateUnidad);
+      const unidadUpdate = await this.unidadMapper.entity2DTO(updateUnidad);
+      return unidadUpdate;
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al actualizar una unidad: ${error.message}`,
+      );
+    }
   }
 
-  update(id: number, updateUnidadDto: UpdateUnidadDto) {
-    return `This action updates a #${id} unidad`;
-  }
+  public async remove(id: number) {
+    const unidad = await this.unidadRepository.findOne({ where: { id: id } });
+    if (!unidad) throw new NotFoundException(`No se encontró la unidad con id ${id}`);
 
-  remove(id: number) {
-    return `This action removes a #${id} unidad`;
+    try {
+
+      await this.unidadRepository.softRemove(unidad);
+      return { message: `Unidad con id ${id} eliminada correctamente` };
+
+    } catch (error) {
+      throw new BadRequestException(`Error al eliminar unidad: ${error.message}`);
+    }
   }
+  
 }

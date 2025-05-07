@@ -41,7 +41,6 @@ export class ProductoMapper {
   async createDTO2Entity(request: CreateProductoRequestDto): Promise<Producto> {
     const newProducto: Producto = new Producto();
     newProducto.nombre = request.nombre;
-    newProducto.fechaAdquisicion = request.fechaAdquisicion;
     newProducto.caracteristicas = request.caracteristicas;
     newProducto.modelo = Modelo.fromId(request.modelo);
     newProducto.marca = Marca.fromId(request.marca);
@@ -52,7 +51,6 @@ export class ProductoMapper {
 
   async updateDTO2Entity(editProducto: Producto, request: UpdateProductoRequestDto): Promise<Producto> {
     request.nombre ? (editProducto.nombre = request.nombre) : null;
-    request.fechaAdquisicion ? (editProducto.fechaAdquisicion = request.fechaAdquisicion) : null;
     request.caracteristicas ? (editProducto.caracteristicas = request.caracteristicas) : null;
     request.modelo ? (editProducto.modelo = Modelo.fromId(request.modelo)) : null;
     request.marca ? (editProducto.marca = Marca.fromId(request.marca)) : null;
