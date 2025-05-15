@@ -7,8 +7,8 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 
 
-@Entity({ name:'inve_06_det_unidad'})
-export class Unidad extends BaseEntity{
+@Entity({ name: 'inve_06_det_unidad' })
+export class Unidad extends BaseEntity {
 
     @Column({ name: 'inve06_numero_serie', unique: true, nullable: true })
     numero_serie: string
@@ -32,15 +32,16 @@ export class Unidad extends BaseEntity{
 
     // RELACIONES:
 
+
     // Producto
     @ManyToOne(() => Producto)
-    @JoinColumn({ name: 'rela_inve01'})
-        producto: Producto;
+    @JoinColumn({ name: 'rela_inve01' })
+    producto: Producto;                            ////COMENTARIO/SUGERENCIA Falta el ONE TO MANY en producto
 
     @ManyToOne(() => Ubicacion)
-    @JoinColumn({ name: 'rela_inve07'})
-        ubicacion: Ubicacion;
-    
+    @JoinColumn({ name: 'rela_inve07' })                 ////COMENTARIO/SUGERENCIA Falta el ONE TO MANY en ubicacion
+    ubicacion: Ubicacion;
+
     static fromId(id: number) {
         const unidad = new Unidad();
         unidad.id = id;

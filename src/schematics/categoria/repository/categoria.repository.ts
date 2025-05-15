@@ -24,9 +24,10 @@ export class CategoriaRepository extends Repository<Categoria> {
             });
         }
 
+        //COMENTARIO/SUGERENCIA Aveces es bueno usar LIKE para buscar por los campos que contengan texto, simplemente para ir haciendo busquedas parciales
         if (request.nombre) {
-            queryBuilder.andWhere('categoria.nombre = :nombre', {
-                nombre: request.nombre,
+            queryBuilder.andWhere('categoria.nombre LIKE :nombre', {
+                nombre: `%${request.nombre}%`,
             });
         }
 

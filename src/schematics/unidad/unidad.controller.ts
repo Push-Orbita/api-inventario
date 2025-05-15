@@ -5,7 +5,9 @@ import { UpdateUnidadDto } from './dto/update-unidad.dto';
 
 @Controller('unidad')
 export class UnidadController {
-  constructor(private readonly unidadService: UnidadService) {}
+  constructor(private readonly unidadService: UnidadService) { }
+
+  //COMENTARIO/SUGERENCIA Faltan algunos decoradores de Swagger
 
   @Post()
   create(@Body() createUnidadDto: CreateUnidadRequestDto) {
