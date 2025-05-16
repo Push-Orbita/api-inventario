@@ -24,14 +24,14 @@ export class ProductoRepository extends Repository<Producto> {
 
 
         if (request.nombre) {
-            queryBuilder.andWhere('producto.nombre = :nombre', {
-                nombre: request.nombre,
+            queryBuilder.andWhere('producto.nombre LIKIE :nombre', {
+                nombre: `%${request.nombre}%`,
             });
         }
 
         if (request.caracteristicas) {
-            queryBuilder.andWhere('producto.caracteristicas = :caracteristicas', {
-                caracteristicas: request.caracteristicas,
+            queryBuilder.andWhere('producto.caracteristicas LIKE :caracteristicas', {
+                caracteristicas: `%${request.caracteristicas}%`,
             });
         }
         if (request.id) {
