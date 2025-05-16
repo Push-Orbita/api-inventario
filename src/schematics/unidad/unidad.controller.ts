@@ -11,13 +11,13 @@ import { plainToInstance } from 'class-transformer';
 @ApiTags('Unidad')
 @Controller('unidad')
 export class UnidadController {
-  constructor(private readonly unidadService: UnidadService) {}
+  constructor(private readonly unidadService: UnidadService) { }
 
   @Get('search')
   @ApiOperation({
     summary: 'Buscar unidad',
     description:
-        'Permite buscar unidades según los criterios especificados en la solicitud.',
+      'Permite buscar unidades según los criterios especificados en la solicitud.',
   })
   @ApiOkResponse({
     type: PageDto,
@@ -31,20 +31,20 @@ export class UnidadController {
 
   @Post()
   @ApiOperation({
-      summary: 'Crear una nueva unidad',
-      description: 'Permite crear una nueva unidad con los datos proporcionados.',
-    })
-    @ApiBody({
-      type: CreateUnidadRequestDto,
-      description: 'Datos de la nueva unidad a crear.',
-    })
-    @ApiOkResponse({
-      type: UnidadDTO,
-      description: 'Unidad creada correctamente.',
-    })
-    @ApiBadRequestResponse({
-      description: 'Solicitud incorrecta o datos inválidos.',
-    })
+    summary: 'Crear una nueva unidad',
+    description: 'Permite crear una nueva unidad con los datos proporcionados.',
+  })
+  @ApiBody({
+    type: CreateUnidadRequestDto,
+    description: 'Datos de la nueva unidad a crear.',
+  })
+  @ApiOkResponse({
+    type: UnidadDTO,
+    description: 'Unidad creada correctamente.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Solicitud incorrecta o datos inválidos.',
+  })
   create(@Body() createUnidadRequestDto: CreateUnidadRequestDto): Promise<UnidadDTO> {
     return this.unidadService.create(createUnidadRequestDto);
   }

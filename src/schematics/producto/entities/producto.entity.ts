@@ -3,7 +3,8 @@ import { Categoria } from "src/schematics/categoria/entities/categoria.entity";
 import { Marca } from "src/schematics/marca/entities/marca.entity";
 import { Modelo } from "src/schematics/modelo/entities/modelo.entity";
 import { Tipo } from "src/schematics/tipo/entities/tipo.entity";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Unidad } from "src/schematics/unidad/entities/unidad.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 
 @Entity({ name: 'inve_01_cab_producto' })
@@ -36,6 +37,9 @@ export class Producto extends BaseEntity {
     @ManyToOne(() => Categoria )
     @JoinColumn({ name: 'rela_inve05' })
     categoria: Categoria;
+
+    // Unidad
+    @OneToMany(() => Unidad, (unidad) => unidad.producto)
 
     static fromId(id: number) {
         const producto = new Producto();

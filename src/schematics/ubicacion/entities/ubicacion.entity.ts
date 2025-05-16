@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity } from "src/common/baseEntity";
-import { Producto } from "src/schematics/producto/entities/producto.entity";
+import { Unidad } from "src/schematics/unidad/entities/unidad.entity";
 
 
 @Entity({ name: 'inve_07_cab_ubicacion' })
@@ -11,6 +11,10 @@ export class Ubicacion extends BaseEntity {
 
     @Column({ name: 'inve07_direccion', nullable: true })
     direccion: string;
+
+    // Unidad
+    @OneToMany(() => Unidad, (unidad) => unidad.ubicacion)
+    productos: Unidad[]
 
     static fromId(id: number) {
         const producto = new Ubicacion();

@@ -1,12 +1,7 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUnidadRequestDto } from './dto/create-unidad-request.dto';
 import { UpdateUnidadRequestDto } from './dto/update-unidad-request.dto';
 import { UnidadDTO } from './dto/unidad.dto';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Unidad } from './entities/unidad.entity';
-import { Producto } from '../producto/entities/producto.entity';
-import { Ubicacion } from '../ubicacion/entities/ubicacion.entity';
 import { UnidadMapper } from './mappers/unidad.mapper';
 import { UnidadRepository } from './repository/unidad-repository';
 import { SearchUnidadRequestDto } from './dto/search-unidad-request.dto';

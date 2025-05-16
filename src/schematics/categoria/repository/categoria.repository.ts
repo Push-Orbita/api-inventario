@@ -25,14 +25,14 @@ export class CategoriaRepository extends Repository<Categoria> {
         }
 
         if (request.nombre) {
-            queryBuilder.andWhere('categoria.nombre = :nombre', {
-                nombre: request.nombre,
+            queryBuilder.andWhere('categoria.nombre LIKE :nombre', {
+                nombre: `%${request.nombre}%`,
             });
         }
 
         if (request.descripcion) {
-            queryBuilder.andWhere('categoria.descripcion = :descripcion', {
-                descripcion: request.descripcion,
+            queryBuilder.andWhere('categoria.descripcion LIKE :descripcion', {
+                descripcion: `%${request.descripcion}%`,
             });
         }
 

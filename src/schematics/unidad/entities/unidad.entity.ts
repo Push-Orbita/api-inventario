@@ -4,7 +4,7 @@ import { Producto } from "src/schematics/producto/entities/producto.entity";
 import { Ubicacion } from "src/schematics/ubicacion/entities/ubicacion.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
-@Entity({ name:'inve_06_det_unidad'})
+@Entity({ name: 'inve_06_det_unidad' })
 export class Unidad extends BaseEntity{
 
     @Column({ name: 'inve06_numero_serie', unique: true, nullable: true })
@@ -31,12 +31,12 @@ export class Unidad extends BaseEntity{
 
     // Producto
     @ManyToOne(() => Producto)
-    @JoinColumn({ name: 'rela_inve01'})
+    @JoinColumn({ name: 'rela_inve01' })
     producto: Producto;
 
     // Ubicacion
     @ManyToOne(() => Ubicacion)
-    @JoinColumn({ name: 'rela_inve07'})
+    @JoinColumn({ name: 'rela_inve07' })
     ubicacion: Ubicacion;
     
     static fromId(id: number) {

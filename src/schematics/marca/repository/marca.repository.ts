@@ -20,8 +20,8 @@ export class MarcaRepository extends Repository<Marca> {
 
 
         if (request.nombre) {
-            queryBuilder.andWhere('marca.nombre = :nombre', {
-                nombre: request.nombre,
+            queryBuilder.andWhere('marca.nombre LIKE :nombre', {
+                nombre: `%${request.nombre}%`,
             });
         }
 

@@ -20,13 +20,13 @@ export class TipoRepository extends Repository<Tipo> {
 
 
         if (request.nombre) {
-            queryBuilder.andWhere('tipo.nombre = :nombre', {
-                nombre: request.nombre,
+            queryBuilder.andWhere('tipo.nombre LIKE :nombre', {
+                nombre: `%${request.nombre}%`,
             });
         }
         if (request.descripcion) {
-            queryBuilder.andWhere('tipo.descripcion = :descripcion', {
-                descripcion: request.descripcion,
+            queryBuilder.andWhere('tipo.descripcion LIKE :descripcion', {
+                descripcion: `%${request.descripcion}%`,
             });
         }
         if (request.id) {

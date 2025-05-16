@@ -18,8 +18,8 @@ export class ModeloRepository extends Repository<Modelo> {
         const queryBuilder: SelectQueryBuilder<Modelo> = this.dataSource.createQueryBuilder(Modelo, 'modelo')
 
         if (request.nombre) {
-            queryBuilder.andWhere('modelo.nombre = :nombre', {
-                nombre: request.nombre,
+            queryBuilder.andWhere('modelo.nombre LIKE :nombre', {
+                nombre: `%${request.nombre}%`,
             });
         }
         if (request.id) {
