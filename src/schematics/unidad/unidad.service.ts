@@ -9,6 +9,8 @@ import { Producto } from '../producto/entities/producto.entity';
 import { Ubicacion } from '../ubicacion/entities/ubicacion.entity';
 import { UnidadMapper } from './mappers/unidad.mapper';
 import { UnidadRepository } from './repository/unidad-repository';
+import { SearchUnidadRequestDto } from './dto/search-unidad-request.dto';
+import { PageDto } from 'src/common/dto/page.dto';
 
 @Injectable()
 export class UnidadService {
@@ -77,6 +79,15 @@ export class UnidadService {
 
     } catch (error) {
       throw new BadRequestException(`Error al eliminar unidad: ${error.message}`);
+    }
+  }
+
+  public async searchUnidad(request: SearchUnidadRequestDto): Promise<PageDto<UnidadDTO>> {
+    try {
+      const unidadPage = await this.unidadRepository.search(request);
+      return this.unidadMapper.page2Dto(request, unidadPage);
+    } catch (error) {
+      throw new BadRequestException(`Error al buscar unidades: ${error.message}`);
     }
   }
   

@@ -1,14 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
 import { UnidadService } from './unidad.service';
 import { CreateUnidadRequestDto } from './dto/create-unidad-request.dto';
 import { UpdateUnidadRequestDto } from './dto/update-unidad-request.dto';
 import { UnidadDTO } from './dto/unidad.dto';
 import { ApiBadRequestResponse, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { PageDto } from 'src/common/dto/page.dto';
+import { SearchUnidadRequestDto } from './dto/search-unidad-request.dto';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('Unidad')
 @Controller('unidad')
 export class UnidadController {
   constructor(private readonly unidadService: UnidadService) {}
+
+  @Get('search')
+  @ApiOperation({
+    summary: 'Buscar unidad',
+    description:
+        'Permite buscar unidades según los criterios especificados en la solicitud.',
+  })
+  @ApiOkResponse({
+    type: PageDto,
+    description: 'Lista paginada de unidades encontradas.',
+  })
+  @ApiBadRequestResponse({ description: 'Solicitud incorrecta.' })
+  async search(@Query() request: SearchUnidadRequestDto): Promise<PageDto<UnidadDTO>> {
+    const req = plainToInstance(SearchUnidadRequestDto, request);
+    return await this.unidadService.searchUnidad(req);
+  }
 
   @Post()
   @ApiOperation({
@@ -102,10 +121,4 @@ export class UnidadController {
     return this.unidadService.remove(id);
   }
 
-
-
-  @Get()
-  findAll() {
-    return 'This action returns all unidades';
-  }
 }
