@@ -24,7 +24,7 @@ export class ProductoRepository extends Repository<Producto> {
 
 
         if (request.nombre) {
-            queryBuilder.andWhere('producto.nombre LIKIE :nombre', {
+            queryBuilder.andWhere('producto.nombre LIKE :nombre', {
                 nombre: `%${request.nombre}%`,
             });
         }

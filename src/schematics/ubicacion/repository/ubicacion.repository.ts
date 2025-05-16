@@ -20,14 +20,14 @@ export class UbicacionRepository extends Repository<Ubicacion> {
 
 
         if (request.nombre) {
-            queryBuilder.andWhere('ubicacion.nombre = :nombre', {
-                nombre: request.nombre,
+            queryBuilder.andWhere('ubicacion.nombre LIKE :nombre', {
+                nombre: `%${request.nombre}%`,
             });
         }
 
         if (request.direccion) {
-            queryBuilder.andWhere('ubicacion.direccion = :direccion', {
-              direccion: request.direccion,
+            queryBuilder.andWhere('ubicacion.direccion LIKE :direccion', {
+              direccion: `%${request.direccion}%`,
             });
           }
 

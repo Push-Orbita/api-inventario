@@ -38,6 +38,8 @@ export class Unidad extends BaseEntity{
     @ManyToOne(() => Ubicacion)
     @JoinColumn({ name: 'rela_inve07' })
     ubicacion: Ubicacion;
+
+    //// FALTA EL ONE TO MANY DE MOVIMIENTO
     
     static fromId(id: number) {
         const unidad = new Unidad();

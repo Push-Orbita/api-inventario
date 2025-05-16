@@ -82,6 +82,7 @@ export class ProductoService {
       const productoPage = await this.productoRepository.search(request);
       return this.productoMapper.page2Dto(request, productoPage);
     } catch (error) {
+      console.log(error);
       throw new BadRequestException(`Error al buscar productos: ${error.message}`);
     }
   }
