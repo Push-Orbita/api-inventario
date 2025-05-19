@@ -1,8 +1,9 @@
 import { BaseEntity } from "src/common/baseEntity";
 import { TipoEstadoEnum } from "src/common/enums/tipo-estado.enum";
+import { Movimiento } from "src/schematics/movimiento/entities/movimiento.entity";
 import { Producto } from "src/schematics/producto/entities/producto.entity";
 import { Ubicacion } from "src/schematics/ubicacion/entities/ubicacion.entity";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity({ name: 'inve_06_det_unidad' })
 export class Unidad extends BaseEntity{
@@ -39,7 +40,9 @@ export class Unidad extends BaseEntity{
     @JoinColumn({ name: 'rela_inve07' })
     ubicacion: Ubicacion;
 
-    //// FALTA EL ONE TO MANY DE MOVIMIENTO
+    // Movimientos
+    @OneToMany(() => Movimiento, (movimiento) => movimiento.unidad)
+    movimientos: Movimiento[]
     
     static fromId(id: number) {
         const unidad = new Unidad();
@@ -47,5 +50,3 @@ export class Unidad extends BaseEntity{
         return unidad;
     }
 }
-
-

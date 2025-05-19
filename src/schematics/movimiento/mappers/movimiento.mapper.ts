@@ -11,7 +11,7 @@ import { Unidad } from "src/schematics/unidad/entities/unidad.entity";
 
 @Injectable()
 export class MovimientoMapper {
-  constructor() {}
+  constructor() { }
 
   async entity2DTO(movimiento: Movimiento): Promise<MovimientoDTO> {
     return plainToInstance(MovimientoDTO, movimiento, {
@@ -48,12 +48,28 @@ export class MovimientoMapper {
     movimiento: Movimiento,
     request: UpdateMovimientoRequestDto
   ): Promise<Movimiento> {
-    request.persona ? (movimiento.persona = request.persona) : null;
-    request.fecha ? (movimiento.fecha = request.fecha) : null;
-    request.operacion ? (movimiento.operacion = request.operacion) : null;
-    request.detalle ? (movimiento.detalle = request.detalle) : null;
-    request.unidad ? (movimiento.unidad = Unidad.fromId(request.unidad)) : null;
+
+    if (request.persona !== undefined && request.persona !== null) {
+      movimiento.persona = request.persona;
+    }
+
+    if (request.fecha !== undefined && request.fecha !== null) {
+      movimiento.fecha = request.fecha;
+    }
+
+    if (request.operacion !== undefined && request.operacion !== null) {
+      movimiento.operacion = request.operacion;
+    }
+
+    if (request.detalle !== undefined && request.detalle !== null) {
+      movimiento.detalle = request.detalle;
+    }
+
+    if (request.unidad !== undefined && request.unidad !== null) {
+      movimiento.unidad = Unidad.fromId(request.unidad);
+    }
 
     return movimiento;
   }
+
 }

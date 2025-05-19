@@ -12,6 +12,6 @@ import { UnidadMapper } from './mappers/unidad.mapper';
   ],
   controllers: [UnidadController],
   providers: [UnidadService, UnidadRepository, UnidadMapper],
-  exports: [UnidadService]
+  exports: [UnidadService, UnidadRepository]
 })
 export class UnidadModule {}

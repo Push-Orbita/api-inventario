@@ -17,7 +17,7 @@ export class CreateMovimientoRequestDto {
 
     @ApiProperty({ description: 'Fecha del movimiento', type: Date })
     @IsDate()
-    @Type(() => Date) // <- esto convierte el string ISO en un objeto Date
+    @Type(() => Date)
     fecha: Date;
 
     @ApiProperty({

@@ -11,9 +11,9 @@ import { PageDto } from 'src/common/dto/page.dto';
 export class UnidadService {
 
   constructor(
-      private readonly unidadMapper: UnidadMapper,
-      private readonly unidadRepository: UnidadRepository,
-  ) {}
+    private readonly unidadMapper: UnidadMapper,
+    private readonly unidadRepository: UnidadRepository,
+  ) { }
 
   public async create(request: CreateUnidadRequestDto): Promise<UnidadDTO> {
 
@@ -85,5 +85,5 @@ export class UnidadService {
       throw new BadRequestException(`Error al buscar unidades: ${error.message}`);
     }
   }
-  
+
 }
