@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 
 export class CreateProductoRequestDto {
@@ -16,10 +15,10 @@ export class CreateProductoRequestDto {
     caracteristicas: string;
 
 
-    @ApiProperty({ description: 'ID del modelo del producto', type: Number })
+    @ApiProperty({ description: 'ID del modelo del producto', type: Number, required: false })
     @IsNumber()
     @IsOptional()
-    modelo: number;
+    modelo?: number;
 
 
     @ApiProperty({ description: 'ID de la marca del producto', type: Number })

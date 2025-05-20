@@ -17,7 +17,7 @@ import { Categoria } from 'src/schematics/categoria/entities/categoria.entity';
 @Injectable()
 export class ProductoMapper {
 
-  constructor() {}
+  constructor() { }
 
   async entity2DTO(producto: Producto): Promise<ProductoDTO> {
     const productoDTO = plainToInstance(ProductoDTO, producto, {
@@ -42,7 +42,11 @@ export class ProductoMapper {
     const newProducto: Producto = new Producto();
     newProducto.nombre = request.nombre;
     newProducto.caracteristicas = request.caracteristicas;
-    newProducto.modelo = Modelo.fromId(request.modelo);
+
+    newProducto.modelo = request.modelo !== undefined && request.modelo !== null
+      ? Modelo.fromId(request.modelo)
+      : null;
+      
     newProducto.marca = Marca.fromId(request.marca);
     newProducto.tipo = Tipo.fromId(request.tipo);
     newProducto.categoria = Categoria.fromId(request.categoria);

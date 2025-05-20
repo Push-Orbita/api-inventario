@@ -10,10 +10,10 @@ export class UpdateUnidadRequestDto {
     @IsOptional()
     numero_serie?: string;
 
-    @ApiProperty({ description: 'Codigo generado por Órbita', type: String, required: false })
-    @IsString()
-    @IsOptional()
-    codigo?: string;
+    // @ApiProperty({ description: 'Codigo generado por Órbita', type: String, required: false })
+    // @IsString()
+    // @IsOptional()
+    // codigo_com?: string;
 
     @ApiProperty({ description: 'Fecha de adquisición de la unidad', type: Date, required: false })
     @IsDate()

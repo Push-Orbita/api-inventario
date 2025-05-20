@@ -14,7 +14,7 @@ export class SearchUnidadRequestDto extends BaseSearchDto {
   @ApiProperty({ description: 'Código de la unidad generado por Órbita', type: String, required: false })
   @IsString()
   @IsOptional()
-  codigo?: string;
+  codigo_com?: string;
 
   @ApiProperty({ description: 'Código de barra asociado a la unidad', type: String, required: false })
   @IsString()

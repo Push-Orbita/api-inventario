@@ -19,9 +19,9 @@ export class Producto extends BaseEntity {
     // RELACIONES:
 
     // Modelo
-    @ManyToOne(() => Modelo)
+    @ManyToOne(() => Modelo, { nullable: true })
     @JoinColumn({ name: 'rela_inve02' })
-    modelo: Modelo;
+    modelo: Modelo | null; // permitimos que el modelo de un producto sea nulo
 
     // Marca
     @ManyToOne(() => Marca)

@@ -11,8 +11,8 @@ export class Unidad extends BaseEntity{
     @Column({ name: 'inve06_numero_serie', unique: true, nullable: true })
     numero_serie: string
 
-    @Column({ name: 'inve06_codigo', unique: true, nullable: false })
-    codigo: string
+    @Column({ name: 'inve06_codigo', unique: true, nullable: true }) // de momento lo colamos como nullable
+    codigo_com: string
 
     @Column({ name: 'inve06_cod_barra', unique: true, nullable: true })
     cod_barra: string
@@ -20,12 +20,7 @@ export class Unidad extends BaseEntity{
     @Column({ name: 'inve06_fecha_adquisicion' })
     fechaAdquisicion: Date;
 
-    @Column({
-        name: 'inve06_estado',
-        type: 'enum',
-        enum: TipoEstadoEnum,
-        nullable: false
-    })
+    @Column({ name: 'inve06_estado', type: 'enum', enum: TipoEstadoEnum, nullable: false })
     estado: TipoEstadoEnum;
 
     // RELACIONES:

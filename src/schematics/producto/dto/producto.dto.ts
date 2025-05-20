@@ -19,10 +19,10 @@ export class ProductoDTO extends CommonDTO {
     @Expose()
     caracteristicas: string;
 
-    @ApiProperty({ description: 'ID del modelo del producto', type: () => ModeloDTO })
+    @ApiProperty({ description: 'ID del modelo del producto', type: () => ModeloDTO, required: false })
     @Type(() => ModeloDTO)
     @Expose()
-    modelo: ModeloDTO;
+    modelo?: ModeloDTO;
 
 
     @ApiProperty({ description: 'ID de la marca del producto', type: () => MarcaDTO })

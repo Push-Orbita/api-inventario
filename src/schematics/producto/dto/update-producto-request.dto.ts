@@ -15,10 +15,10 @@ export class UpdateProductoRequestDto {
     caracteristicas: string;
 
 
-    @ApiProperty({ description: 'ID de la categoría del producto', type: Number })
+    @ApiProperty({ description: 'ID de la categoría del producto', type: Number, required: false })
     @IsNumber()
     @IsOptional()
-    modelo: number;
+    modelo?: number;
 
     @ApiProperty({ description: 'ID de la marca del producto', type: Number })
     @IsNumber()

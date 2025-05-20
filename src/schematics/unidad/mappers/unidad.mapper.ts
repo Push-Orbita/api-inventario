@@ -40,24 +40,24 @@ export class UnidadMapper {
     // Convertir un DTO de creación a una entidad Unidad
     async createDTO2Entity(request: CreateUnidadRequestDto): Promise<Unidad> {
         const newUnidad: Unidad = new Unidad();
-        newUnidad.numero_serie = request.numero_serie;
-        newUnidad.codigo = request.codigo;
-        newUnidad.cod_barra = request.cod_barra;
-        newUnidad.fechaAdquisicion = request.fechaAdquisicion;
-        newUnidad.estado = request.estado;
         newUnidad.producto = Producto.fromId(request.producto);
+        newUnidad.fechaAdquisicion = request.fechaAdquisicion;
+        newUnidad.numero_serie = request.numero_serie;
+        // newUnidad.codigo_com = request.codigo_com;
+        newUnidad.cod_barra = request.cod_barra;
+        newUnidad.estado = request.estado;
         newUnidad.ubicacion = Ubicacion.fromId(request.ubicacion);
         return newUnidad;
     }
 
     // Convertir un DTO de actualización a una entidad Unidad
     async updateDTO2Entity(editUnidad: Unidad, request: UpdateUnidadRequestDto): Promise<Unidad> {
-        request.numero_serie ? (editUnidad.numero_serie = request.numero_serie) : null;
-        request.codigo ? (editUnidad.codigo = request.codigo) : null;
-        request.cod_barra ? (editUnidad.cod_barra = request.cod_barra) : null;
-        request.fechaAdquisicion ? (editUnidad.fechaAdquisicion = request.fechaAdquisicion) : null;
-        request.estado ? (editUnidad.estado = request.estado) : null;
         request.producto ? (editUnidad.producto = Producto.fromId(request.producto)) : null;
+        request.fechaAdquisicion ? (editUnidad.fechaAdquisicion = request.fechaAdquisicion) : null;
+        request.numero_serie ? (editUnidad.numero_serie = request.numero_serie) : null;
+        // request.codigo ? (editUnidad.codigo = request.codigo) : null;
+        request.cod_barra ? (editUnidad.cod_barra = request.cod_barra) : null;
+        request.estado ? (editUnidad.estado = request.estado) : null;
         request.ubicacion ? (editUnidad.ubicacion = Ubicacion.fromId(request.ubicacion)) : null;
         return editUnidad;
     }

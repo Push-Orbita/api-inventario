@@ -14,24 +14,19 @@ export class UnidadDTO extends CommonDTO {
   @Expose()
   numero_serie: string;
 
-  @ApiProperty({ description: 'Codigo originado por Orbita', type: Date, required: true })
+  @ApiProperty({ description: 'Codigo originado por Orbita', type: String, required: false })
   @Expose()
-  codigo: Date;
+  codigo_com: string;
 
-  @ApiProperty({ description: 'Codigo de barra que permite escanear producto con artefacto', type: Date, required: true })
+  @ApiProperty({ description: 'Codigo de barra que permite escanear producto con artefacto', type: String, required: true })
   @Expose()
-  cod_barra: Date;
+  cod_barra: string
 
   @ApiProperty({ description: 'Fecha de adquisición de la Unidad', type: Date })
   @Expose()
   fechaAdquisicion: Date;
 
-  @ApiProperty({
-    description: 'Estado de la unidad',
-    enum: TipoEstadoEnum,
-    required: true,
-    example: TipoEstadoEnum.DISPONIBLE,
-  })
+  @ApiProperty({ description: 'Estado de la unidad', enum: TipoEstadoEnum, required: true, example: TipoEstadoEnum.DISPONIBLE })
   @Expose()
   estado: TipoEstadoEnum;
 

@@ -25,15 +25,15 @@ export class UnidadRepository extends Repository<Unidad> {
             });
         }
 
-        if (request.codigo) {
-            queryBuilder.andWhere('unidad.codigo = :codigo', {
-                codigo: request.codigo,
-            });
-        }
+        // if (request.codigo_com) {
+        //     queryBuilder.andWhere('unidad.codigo_com LIKE :codigo_com', {
+        //         codigo_com: `%${request.codigo_com}%`,
+        //     });
+        // }
 
         if (request.cod_barra) {
-            queryBuilder.andWhere('unidad.cod_barra = :cod_barra', {
-                cod_barra: request.cod_barra,
+            queryBuilder.andWhere('unidad.cod_barra LIKE :cod_barra', {
+                cod_barra: `%${request.cod_barra}%`,
             });
         }
 
