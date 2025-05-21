@@ -13,7 +13,7 @@ import { ProductoRepository } from './repository/producto-repository';
   ],
   controllers: [ProductoController],
   providers: [ProductoService, ProductoRepository, ProductoMapper],
-  exports: [ProductoService]
+  exports: [ProductoService, ProductoRepository]
 })
 
 export class ProductoModule {}

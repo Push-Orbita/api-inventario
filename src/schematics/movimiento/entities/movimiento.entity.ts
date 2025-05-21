@@ -6,26 +6,22 @@ import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
 @Entity({ name: 'inve_08_mov_movimiento' })
 export class Movimiento extends BaseEntity {
 
+  // Persona: relación
+  @Column({ name: 'inve08_persona', unique: true, nullable: false })
+  persona: string;
+
   // Fecha de movimiento
   @Column({ name: 'inve08_fecha' })
   fecha: Date;
 
   // Operacion
-  @Column({
-    name: 'inve08_operacion',
-    type: 'enum',
-    enum: TipoOperacionEnum,
-    nullable: false
-  })
+  @Column({ name: 'inve08_operacion', type: 'enum', enum: TipoOperacionEnum, nullable: false })
   operacion: TipoOperacionEnum;
 
   // Detalle
   @Column({ name: 'inve08_detalle', nullable: true })
   detalle: string;
 
-  // Persona: relación
-  @Column({ name: 'inve08_persona', unique: true, nullable: false })
-  persona: string;
 
   // Unidad
   @ManyToOne(() => Unidad)

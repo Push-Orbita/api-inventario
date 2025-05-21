@@ -43,7 +43,6 @@ export class UnidadMapper {
         newUnidad.producto = Producto.fromId(request.producto);
         newUnidad.fechaAdquisicion = request.fechaAdquisicion;
         newUnidad.numero_serie = request.numero_serie;
-        // newUnidad.codigo_com = request.codigo_com;
         newUnidad.cod_barra = request.cod_barra;
         newUnidad.estado = request.estado;
         newUnidad.ubicacion = Ubicacion.fromId(request.ubicacion);
@@ -55,7 +54,6 @@ export class UnidadMapper {
         request.producto ? (editUnidad.producto = Producto.fromId(request.producto)) : null;
         request.fechaAdquisicion ? (editUnidad.fechaAdquisicion = request.fechaAdquisicion) : null;
         request.numero_serie ? (editUnidad.numero_serie = request.numero_serie) : null;
-        // request.codigo ? (editUnidad.codigo = request.codigo) : null;
         request.cod_barra ? (editUnidad.cod_barra = request.cod_barra) : null;
         request.estado ? (editUnidad.estado = request.estado) : null;
         request.ubicacion ? (editUnidad.ubicacion = Ubicacion.fromId(request.ubicacion)) : null;

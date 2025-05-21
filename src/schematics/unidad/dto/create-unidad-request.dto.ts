@@ -11,10 +11,6 @@ export class CreateUnidadRequestDto {
   @IsOptional()
   numero_serie: string;
 
-  // @ApiProperty({ description: 'Codigo generado por Órbita', type: String, required: true })
-  // @IsString()
-  // codigo_com: string
-
   @ApiProperty({ description: 'Fecha de adquisición de la unidad', type: Date })
   @IsDate()
   @Type(() => Date) // <- esto convierte el string ISO en un objeto Date

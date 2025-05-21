@@ -6,6 +6,7 @@ import { UnidadMapper } from './mappers/unidad.mapper';
 import { UnidadRepository } from './repository/unidad-repository';
 import { SearchUnidadRequestDto } from './dto/search-unidad-request.dto';
 import { PageDto } from 'src/common/dto/page.dto';
+import { ProductoRepository } from '../producto/repository/producto-repository';
 
 @Injectable()
 export class UnidadService {
@@ -13,15 +14,35 @@ export class UnidadService {
   constructor(
     private readonly unidadMapper: UnidadMapper,
     private readonly unidadRepository: UnidadRepository,
+    private readonly productoRepository: ProductoRepository
   ) { }
 
   public async create(request: CreateUnidadRequestDto): Promise<UnidadDTO> {
 
     try {
       const newUnidad = await this.unidadMapper.createDTO2Entity(request);
-      await this.unidadRepository.save(newUnidad);
-      const unidadSaved = await this.unidadMapper.entity2DTO(newUnidad);
-      return unidadSaved;
+      const savedUnidad = await this.unidadRepository.save(newUnidad);
+
+      const producto = await this.productoRepository.findOne({
+        where: { id: request.producto },
+        relations: ['tipo', 'categoria']
+      });
+
+      if (!producto) {
+        throw new NotFoundException('Producto no encontrado');
+      }
+
+      const categoriaNombre = producto.categoria?.nombre?.substring(0, 3).toLowerCase() ?? 'cat';
+      const tipoNombre = producto.tipo?.nombre?.substring(0, 3).toLowerCase() ?? 'tip';
+      const idFormateado = String(savedUnidad.id).padStart(3, '0');
+
+      const codigoCompuesto = `${categoriaNombre}-${tipoNombre}-${idFormateado}`;
+
+      savedUnidad.codigo_com = codigoCompuesto;
+      await this.unidadRepository.save(savedUnidad);
+
+      const unidadDTO = await this.unidadMapper.entity2DTO(savedUnidad);
+      return unidadDTO;
 
     } catch (error) {
       throw new BadRequestException(`Error al intentar crear Unidad: ${error.message}`);
