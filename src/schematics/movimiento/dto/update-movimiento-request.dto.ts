@@ -5,10 +5,10 @@ import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
 
 export class UpdateMovimientoRequestDto {
 
-  @ApiProperty({ description: 'Nombre de la Persona que realiza el movimiento', type: String, required: false })
-  @IsString()
+  @ApiProperty({ description: 'ID de la Persona que realiza el movimiento', type: Number, required: false })
+  @IsNumber()
   @IsOptional()
-  persona?: string;
+  persona?: number;
 
   @ApiProperty({ description: 'ID de la Unidad', type: Number, required: false })
   @IsNumber()

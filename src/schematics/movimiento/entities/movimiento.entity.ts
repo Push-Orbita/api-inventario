@@ -8,7 +8,7 @@ export class Movimiento extends BaseEntity {
 
   // Persona: relación
   @Column({ name: 'inve08_persona', unique: true, nullable: false })
-  persona: string;
+  persona: number;
 
   // Fecha de movimiento
   @Column({ name: 'inve08_fecha' })

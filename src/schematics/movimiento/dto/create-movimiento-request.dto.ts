@@ -7,18 +7,19 @@ import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
 
 export class CreateMovimientoRequestDto {
 
-    @ApiProperty({ description: 'Nombre de la Persona que realiza el movimiento', type: String, required: true })
-    @IsString()
-    persona: string;
-
-    @ApiProperty({ description: 'ID de la Unidad', type: Number })
+    @ApiProperty({ description: 'ID de la Persona que realiza el movimiento', type: Number, required: true })
     @IsNumber()
-    unidad: number; 
+    persona: number;
 
     @ApiProperty({ description: 'Fecha del movimiento', type: Date })
     @IsDate()
     @Type(() => Date)
     fecha: Date;
+
+    @ApiProperty({ description: 'ID de la Unidad', type: Number })
+    @IsNumber()
+    unidad: number; 
+
 
     @ApiProperty({
         description: 'Tipo de la operacion',

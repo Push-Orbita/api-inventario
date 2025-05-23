@@ -7,9 +7,9 @@ import { UnidadDTO } from "src/schematics/unidad/dto/unidad.dto";
 
 export class MovimientoDTO extends CommonDTO {
 
-  @ApiProperty({ description: 'Nombre de la Persona que realiza el movimiento', type: String, required: true })
+  @ApiProperty({ description: 'ID de la Persona que realiza el movimiento', type: Number, required: true })
   @Expose()
-  persona: string;
+  persona: number;
 
   @ApiProperty({ description: 'ID de la Unidad', type: () => UnidadDTO })
   @Type(() => UnidadDTO)
