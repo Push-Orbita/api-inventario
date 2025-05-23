@@ -18,28 +18,35 @@ export class UnidadService {
   ) { }
 
   public async create(request: CreateUnidadRequestDto): Promise<UnidadDTO> {
-
     try {
       const newUnidad = await this.unidadMapper.createDTO2Entity(request);
       const savedUnidad = await this.unidadRepository.save(newUnidad);
 
       const producto = await this.productoRepository.findOne({
         where: { id: request.producto },
-        relations: ['tipo', 'categoria']
+        relations: ['tipo', 'categoria'],
       });
 
       if (!producto) {
         throw new NotFoundException('Producto no encontrado');
       }
 
-      const categoriaNombre = producto.categoria?.nombre?.substring(0, 3).toLowerCase() ?? 'cat';
-      const tipoNombre = producto.tipo?.nombre?.substring(0, 3).toLowerCase() ?? 'tip';
-      const idFormateado = String(savedUnidad.id).padStart(3, '0');
+      // Obtener primeras 3 letras o menos, según el caso
+      const categoriaNombre = producto.categoria?.nombre
+        ? producto.categoria.nombre.substring(0, 3).toLowerCase()
+        : 'cat';
 
-      const codigoCompuesto = `${categoriaNombre}-${tipoNombre}-${idFormateado}`;
+      const tipoNombre = producto.tipo?.nombre
+        ? producto.tipo.nombre.substring(0, 3).toLowerCase()
+        : 'tip';
+
+      // No formatear el ID
+      const idUnidad = savedUnidad.id;
+
+      const codigoCompuesto = `${categoriaNombre}-${tipoNombre}-${idUnidad}`;
 
       savedUnidad.codigo_com = codigoCompuesto;
-      await this.unidadRepository.save(savedUnidad);
+      await this.unidadRepository.save(savedUnidad); // actualizar con el código generado
 
       const unidadDTO = await this.unidadMapper.entity2DTO(savedUnidad);
       return unidadDTO;

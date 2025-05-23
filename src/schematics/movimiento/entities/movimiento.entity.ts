@@ -7,7 +7,7 @@ import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
 export class Movimiento extends BaseEntity {
 
   // Persona: relación
-  @Column({ name: 'inve08_persona', unique: true, nullable: false })
+  @Column({ name: 'inve08_persona', nullable: false })
   persona: number;
 
   // Fecha de movimiento

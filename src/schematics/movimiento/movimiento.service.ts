@@ -20,24 +20,34 @@ export class MovimientoService {
   ) { }
 
   public async create(request: CreateMovimientoRequestDto): Promise<MovimientoDTO> {
-
     try {
       const newMovimiento = await this.movimientoMapper.createDTO2Entity(request);
+
       const unidad = await this.unidadRepository.findOne({ where: { id: request.unidad } });
-      if (!unidad) throw new NotFoundException(`No se encontró la unidad con id ${request.unidad}`);
+      if (!unidad) {
+        throw new NotFoundException(`No se encontró la unidad con id ${request.unidad}`);
+      }
 
       if (request.operacion === "ADQUIERE") {
+        if (unidad.estado !== TipoEstadoEnum.DISPONIBLE) {
+          throw new BadRequestException(`La unidad no está disponible para ser adquirida.`);
+        }
         unidad.estado = TipoEstadoEnum.EN_USO;
       }
 
       if (request.operacion === "DEVUELVE") {
+        if (unidad.estado !== TipoEstadoEnum.EN_USO) {
+          throw new BadRequestException(`La unidad no se encuentra en uso para ser devuelta.`);
+        }
         unidad.estado = TipoEstadoEnum.DISPONIBLE;
       }
 
       await this.unidadRepository.save(unidad);
+
       newMovimiento.unidad = unidad;
 
       await this.movimientoRepository.save(newMovimiento);
+
       const movimientoSaved = await this.movimientoMapper.entity2DTO(newMovimiento);
       return movimientoSaved;
 
@@ -65,59 +75,58 @@ export class MovimientoService {
   }
 
   public async update(id: number, updateDto: UpdateMovimientoRequestDto): Promise<MovimientoDTO> {
-  try {
-    const movimiento = await this.movimientoRepository.findOne({
-      where: { id },
-      relations: ['unidad'],
-    });
+    try {
+      const movimiento = await this.movimientoRepository.findOne({
+        where: { id },
+        relations: ['unidad'],
+      });
 
-    if (!movimiento) throw new NotFoundException(`No se encontró el movimiento con id ${id}`);
+      if (!movimiento) throw new NotFoundException(`No se encontró el movimiento con id ${id}`);
 
-    const operacionAnterior = movimiento.operacion;
-    const unidadAnteriorId = movimiento.unidad.id;
+      const operacionAnterior = movimiento.operacion;
+      const unidadAnteriorId = movimiento.unidad.id;
 
-    const updatedMovimiento = await this.movimientoMapper.updateDTO2Entity(movimiento, updateDto);
+      const updatedMovimiento = await this.movimientoMapper.updateDTO2Entity(movimiento, updateDto);
 
-    const unidadCambio = updateDto.unidad && updateDto.unidad !== unidadAnteriorId;
-    const operacionCambio = updateDto.operacion && updateDto.operacion !== operacionAnterior;
+      const unidadCambio = updateDto.unidad && updateDto.unidad !== unidadAnteriorId;
+      const operacionCambio = updateDto.operacion && updateDto.operacion !== operacionAnterior;
 
-    if (unidadCambio || operacionCambio) {
-      const unidadAnterior = await this.unidadRepository.findOne({ where: { id: unidadAnteriorId } });
-      if (!unidadAnterior) throw new NotFoundException(`No se encontró la unidad con id ${unidadAnteriorId}`);
+      if (unidadCambio || operacionCambio) {
+        const unidadAnterior = await this.unidadRepository.findOne({ where: { id: unidadAnteriorId } });
+        if (!unidadAnterior) throw new NotFoundException(`No se encontró la unidad con id ${unidadAnteriorId}`);
 
-      if (operacionAnterior === 'ADQUIERE') {
-        unidadAnterior.estado = TipoEstadoEnum.DISPONIBLE;
+        if (operacionAnterior === 'ADQUIERE') {
+          unidadAnterior.estado = TipoEstadoEnum.DISPONIBLE;
+        }
+        if (operacionAnterior === 'DEVUELVE') {
+          unidadAnterior.estado = TipoEstadoEnum.EN_USO;
+        }
+        await this.unidadRepository.save(unidadAnterior);
+
+        const nuevaUnidadId = updateDto.unidad ?? unidadAnteriorId;
+        const unidadActualizada = await this.unidadRepository.findOne({ where: { id: nuevaUnidadId } });
+        if (!unidadActualizada) throw new NotFoundException(`No se encontró la unidad con id ${nuevaUnidadId}`);
+
+        const nuevaOperacion = updateDto.operacion ?? operacionAnterior;
+        if (nuevaOperacion === 'ADQUIERE') {
+          unidadActualizada.estado = TipoEstadoEnum.EN_USO;
+        }
+        if (nuevaOperacion === 'DEVUELVE') {
+          unidadActualizada.estado = TipoEstadoEnum.DISPONIBLE;
+        }
+        await this.unidadRepository.save(unidadActualizada);
+
+        updatedMovimiento.unidad = unidadActualizada;
       }
-      if (operacionAnterior === 'DEVUELVE') {
-        unidadAnterior.estado = TipoEstadoEnum.EN_USO;
-      }
-      await this.unidadRepository.save(unidadAnterior);
 
-      const nuevaUnidadId = updateDto.unidad ?? unidadAnteriorId;
-      const unidadActualizada = await this.unidadRepository.findOne({ where: { id: nuevaUnidadId } });
-      if (!unidadActualizada) throw new NotFoundException(`No se encontró la unidad con id ${nuevaUnidadId}`);
+      await this.movimientoRepository.save(updatedMovimiento);
+      const movimientoUpdate = await this.movimientoMapper.entity2DTO(updatedMovimiento);
+      return movimientoUpdate;
 
-      const nuevaOperacion = updateDto.operacion ?? operacionAnterior;
-      if (nuevaOperacion === 'ADQUIERE') {
-        unidadActualizada.estado = TipoEstadoEnum.EN_USO;
-      }
-      if (nuevaOperacion === 'DEVUELVE') {
-        unidadActualizada.estado = TipoEstadoEnum.DISPONIBLE;
-      }
-      await this.unidadRepository.save(unidadActualizada);
-
-      updatedMovimiento.unidad = unidadActualizada;
+    } catch (error) {
+      throw new BadRequestException(`Error al intentar actualizar Movimiento: ${error.message}`);
     }
-
-    await this.movimientoRepository.save(updatedMovimiento);
-    const movimientoUpdate = await this.movimientoMapper.entity2DTO(updatedMovimiento);
-    return movimientoUpdate;
-
-  } catch (error) {
-    throw new BadRequestException(`Error al intentar actualizar Movimiento: ${error.message}`);
   }
-}
-
 
   public async remove(id: number) {
 
