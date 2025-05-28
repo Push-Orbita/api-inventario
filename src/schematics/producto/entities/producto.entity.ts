@@ -1,4 +1,4 @@
-import { BaseEntity } from "src/common/baseEntity";
+import { BaseEntity } from "src/common/models/baseEntity";
 import { Categoria } from "src/schematics/categoria/entities/categoria.entity";
 import { Marca } from "src/schematics/marca/entities/marca.entity";
 import { Modelo } from "src/schematics/modelo/entities/modelo.entity";

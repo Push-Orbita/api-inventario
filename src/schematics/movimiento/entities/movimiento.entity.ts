@@ -1,6 +1,6 @@
 import { Unidad } from "src/schematics/unidad/entities/unidad.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { BaseEntity } from "src/common/baseEntity";
+import { BaseEntity } from "src/common/models/baseEntity";
 import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
 
 @Entity({ name: 'inve_08_mov_movimiento' })

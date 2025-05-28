@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import { BaseEntity } from "src/common/baseEntity";
+import { BaseEntity } from "src/common/models/baseEntity";
 import { Unidad } from "src/schematics/unidad/entities/unidad.entity";
 
 

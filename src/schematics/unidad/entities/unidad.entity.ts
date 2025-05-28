@@ -1,4 +1,4 @@
-import { BaseEntity } from "src/common/baseEntity";
+import { BaseEntity } from "src/common/models/baseEntity";
 import { TipoEstadoEnum } from "src/common/enums/tipo-estado.enum";
 import { Movimiento } from "src/schematics/movimiento/entities/movimiento.entity";
 import { Producto } from "src/schematics/producto/entities/producto.entity";
