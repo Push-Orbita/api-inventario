@@ -8,6 +8,7 @@ import { MovimientoDTO } from './dto/movimiento.dto';
 import { SearchMovimientoRequestDto } from './dto/search-movimiento-request.dto';
 import { PageDto } from 'src/common/dto/page.dto';
 import { plainToInstance } from 'class-transformer';
+import { GetUser } from 'src/common/decorators/user.decorator';
 
 @ApiTags('Movimiento')
 @Controller('movimiento')
@@ -49,7 +50,7 @@ export class MovimientoController {
   @ApiBadRequestResponse({
     description: 'Solicitud incorrecta o datos inválidos.',
   })
-  create(@Body() createMovimientoRequestDto: CreateMovimientoRequestDto): Promise<MovimientoDTO> {
+  create(@Body() createMovimientoRequestDto: CreateMovimientoRequestDto, @GetUser('userId') persona: number): Promise<MovimientoDTO> {
     return this.movimientoService.create(createMovimientoRequestDto);
   }
 
