@@ -6,14 +6,12 @@ export class UpdateProductoRequestDto {
     @ApiProperty({ description: 'Nombre del producto', type: String, required: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
     
-
     @ApiProperty({ description: 'Caracteristicas del producto', type: String, required: false })
     @IsString()
     @IsOptional()
-    caracteristicas: string;
-
+    caracteristicas?: string;
 
     @ApiProperty({ description: 'ID de la categoría del producto', type: Number, required: false })
     @IsNumber()
@@ -23,15 +21,15 @@ export class UpdateProductoRequestDto {
     @ApiProperty({ description: 'ID de la marca del producto', type: Number })
     @IsNumber()
     @IsOptional()
-    marca: number;
+    marca?: number;
 
     @ApiProperty({ description: 'ID del tipo de producto', type: Number })
     @IsNumber()
     @IsOptional()
-    tipo: number;
+    tipo?: number;
 
     @ApiProperty({ description: 'ID de la categoría del producto', type: Number })
     @IsNumber()
     @IsOptional()
-    categoria: number;
+    categoria?: number;
 }

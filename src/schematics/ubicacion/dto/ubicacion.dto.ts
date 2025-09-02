@@ -12,5 +12,5 @@ export class UbicacionDTO extends CommonDTO {
 
     @ApiProperty({ description: 'Dirección de la ubicación', type: String, nullable: true })
     @Expose()
-    direccion: string;
+    direccion?: string;
 }

@@ -12,5 +12,5 @@ export class TipoDTO extends CommonDTO {
 
     @ApiProperty({ description: 'Descripción del tipo', type: String, nullable: true })
     @Expose()
-    descripcion: string
+    descripcion?: string
 }

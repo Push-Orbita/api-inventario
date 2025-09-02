@@ -36,7 +36,7 @@ export class TipoMapper {
   async createDTO2Entity(request: CreateTipoRequestDto): Promise<Tipo> {
     const newTipo: Tipo = new Tipo();
     newTipo.nombre = request.nombre;
-    newTipo.descripcion = request.descripcion;
+    newTipo.descripcion = request.descripcion ? request.descripcion : null;
     return newTipo;
   }
 

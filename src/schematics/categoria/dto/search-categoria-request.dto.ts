@@ -11,16 +11,16 @@ export class SearchCategoriaRequestDto extends BaseSearchDto {
     @IsNumber()
     @IsOptional()
     @Type(() => Number)
-    id: number;
+    id?: number;
 
     @ApiProperty({ description: 'Nombre de la categoria a buscar', type: String, required: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
 
     @ApiProperty({ description: 'Descripción de la Categoria para buscar', required: false })
     @IsString()
     @IsOptional()
-    descripcion: string;
+    descripcion?: string;
 
 }

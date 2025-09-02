@@ -18,7 +18,7 @@ export const DataSourceConfig: DataSourceOptions = {
             ? ['dist/migration/*.js']
             : [__dirname + '/../../migration/*{.ts,.js}'],
     logging: false,
-    synchronize: process.env.NODE_ENV !== 'production',
+    synchronize: false, // Deshabilitado para evitar conflictos de tipos y fechas
 }
 
 export const AppDataSource = new DataSource(DataSourceConfig);

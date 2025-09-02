@@ -20,26 +20,14 @@ export class UnidadRepository extends Repository<Unidad> {
             .leftJoinAndSelect('unidad.ubicacion', 'ubicacion');
 
         if (request.numero_serie) {
-            queryBuilder.andWhere('unidad.numero_serie = :numero_serie', {
-                numero_serie: request.numero_serie,
+            queryBuilder.andWhere('LOWER(unidad.numero_serie) LIKE LOWER(:numero_serie)', {
+                numero_serie: `%${request.numero_serie}%`,
             });
         }
 
-        // if (request.codigo_com) {
-        //     queryBuilder.andWhere('unidad.codigo_com LIKE :codigo_com', {
-        //         codigo_com: `%${request.codigo_com}%`,
-        //     });
-        // }
-
-        if (request.cod_barra) {
-            queryBuilder.andWhere('unidad.cod_barra LIKE :cod_barra', {
-                cod_barra: `%${request.cod_barra}%`,
-            });
-        }
-
-        if (request.fechaAdquisicion) {
-            queryBuilder.andWhere('unidad.fechaAdquisicion = :fechaAdquisicion', {
-                fechaAdquisicion: request.fechaAdquisicion,
+        if (request.codigo_com) {
+            queryBuilder.andWhere('LOWER(unidad.codigo_com) LIKE LOWER(:codigo_com)', {
+                codigo_com: `%${request.codigo_com}%`,
             });
         }
 

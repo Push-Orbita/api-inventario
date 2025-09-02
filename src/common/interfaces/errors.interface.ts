@@ -1,10 +1,10 @@
 interface ErrorDetail {
-    CODE: string;
-    MESSAGE: string;
+  CODE: string;
+  MESSAGE: string;
 }
 
 export interface ErrorDictionary {
-    [key: string]: {
-        [key: string]: ErrorDetail;
-    };
+  [key: string]: {
+    [key: string]: ErrorDetail;
+  };
 }

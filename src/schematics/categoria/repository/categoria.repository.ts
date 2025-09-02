@@ -25,18 +25,17 @@ export class CategoriaRepository extends Repository<Categoria> {
         }
 
         if (request.nombre) {
-            queryBuilder.andWhere('categoria.nombre LIKE :nombre', {
+            queryBuilder.andWhere('LOWER(categoria.nombre) LIKE LOWER(:nombre)', {
                 nombre: `%${request.nombre}%`,
             });
         }
 
         if (request.descripcion) {
-            queryBuilder.andWhere('categoria.descripcion LIKE :descripcion', {
+            queryBuilder.andWhere('LOWER(categoria.descripcion) LIKE LOWER(:descripcion)', {
                 descripcion: `%${request.descripcion}%`,
             });
         }
 
-        queryBuilder.orderBy('categoria.nombre', 'ASC');
         queryBuilder.orderBy('categoria.id', 'DESC');
 
         const [list, count] = await queryBuilder

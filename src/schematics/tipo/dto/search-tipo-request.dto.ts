@@ -10,16 +10,16 @@ export class SearchTipoRequestDto extends BaseSearchDto {
     @IsNumber()
     @IsOptional()
     @Type(() => Number)
-    id: number;
+    id?: number;
 
     @ApiProperty({ description: 'Nombre del tipo a buscar', type: String, required: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
 
     @ApiProperty({ description: 'Descripción del tipo a buscar', required: false })
     @IsString()
     @IsOptional()
-    descripcion: string;
+    descripcion?: string;
 
 }

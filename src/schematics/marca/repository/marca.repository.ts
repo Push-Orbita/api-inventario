@@ -18,20 +18,18 @@ export class MarcaRepository extends Repository<Marca> {
         const queryBuilder: SelectQueryBuilder<Marca> =
             this.dataSource.createQueryBuilder(Marca, 'marca')
 
-
-        if (request.nombre) {
-            queryBuilder.andWhere('marca.nombre LIKE :nombre', {
-                nombre: `%${request.nombre}%`,
-            });
-        }
-
         if (request.id) {
             queryBuilder.andWhere('marca.id = :id', {
                 id: request.id,
             });
         }
 
-        queryBuilder.orderBy('marca.nombre', 'ASC');
+        if (request.nombre) {
+            queryBuilder.andWhere('LOWER(marca.nombre) LIKE LOWER(:nombre)', {
+                nombre: `%${request.nombre}%`,
+            });
+        }
+
         queryBuilder.orderBy('marca.id', 'DESC');
 
         const [list, count] = await queryBuilder

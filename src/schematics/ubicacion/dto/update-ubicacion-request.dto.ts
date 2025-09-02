@@ -6,10 +6,10 @@ export class UpdateUbicacionRequestDto {
     @ApiProperty({ description: 'Nombre de la ubicación', type: String, required: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
 
     @ApiProperty({ description: 'Dirección de la ubicación', type: String, required: false })
     @IsString()
     @IsOptional()
-    direccion: string;
+    direccion?: string;
 }

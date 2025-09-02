@@ -1,12 +1,12 @@
-
 export interface JwtPayload {
-  sub: number;
+  id: number;
+  apellido: string;
+  cuil: string;
   email: string;
+  exp: number;
+  iat: number;
+  nombre: string;
+  sistema: string;
+  sistemaId: number;
   verificationCode?: string;
-}
-
-export interface JwtResponse {
-  accessToken: string;
-  refreshToken: string;
-  // user: UsuarioDTO;
 }

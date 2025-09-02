@@ -10,11 +10,11 @@ export class SearchModeloRequestDto extends BaseSearchDto {
     @IsNumber()
     @IsOptional()
     @Type(() => Number)
-    id: number;
+    id?: number;
 
     @ApiProperty({ description: 'Nombre del modelo a buscar', type: String, required: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
 
 }

@@ -1,14 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsNumber, IsString } from "class-validator";
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
-
-
 
 export class CreateMovimientoRequestDto {
 
+    userId: number;
+
     @ApiProperty({ description: 'ID de la Persona que realiza el movimiento', type: Number, required: true })
     @IsNumber()
+    @IsNotEmpty()
     persona: number;
 
     @ApiProperty({ description: 'Fecha del movimiento', type: Date })

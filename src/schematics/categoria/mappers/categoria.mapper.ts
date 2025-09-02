@@ -36,13 +36,17 @@ export class CategoriaMapper {
   async createDTO2Entity(request: CreateCategoriaRequestDto): Promise<Categoria> {
     const newCategoria: Categoria = new Categoria();
     newCategoria.nombre = request.nombre;
-    newCategoria.descripcion = request.descripcion;
+    newCategoria.descripcion = request.descripcion || null;
     return newCategoria;
   }
 
   async updateDTO2Entity(editCategoria: Categoria, request: UpdateCategoriaRequestDto): Promise<Categoria> {
-    request.nombre ? (editCategoria.nombre = request.nombre) : null;
-    request.descripcion ? (editCategoria.descripcion = request.descripcion) : null;
+    if (request.nombre !== undefined) {
+      editCategoria.nombre = request.nombre;
+    }
+    if (request.descripcion !== undefined) {
+      editCategoria.descripcion = request.descripcion || null;
+    }
     return editCategoria;
   }
 }

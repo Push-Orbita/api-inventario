@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query 
 import { MovimientoService } from './movimiento.service';
 import { CreateMovimientoRequestDto } from './dto/create-movimiento-request.dto';
 import { UpdateMovimientoRequestDto } from './dto/update-movimiento-request.dto';
-import { ApiBadRequestResponse, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { MovimientoDTO } from './dto/movimiento.dto';
 import { SearchMovimientoRequestDto } from './dto/search-movimiento-request.dto';
@@ -14,7 +14,7 @@ import { GetUser } from 'src/common/decorators/user.decorator';
 @Controller('movimiento')
 export class MovimientoController {
 
-  constructor(private readonly movimientoService: MovimientoService) {}
+  constructor(private readonly movimientoService: MovimientoService) { }
 
   @Get('search')
   @ApiOperation({
@@ -35,6 +35,7 @@ export class MovimientoController {
 
 
   @Post()
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Crear un nuevo movimiento',
     description: 'Permite registrar un movimiento que a tenido alguna Unidad.',
@@ -50,7 +51,11 @@ export class MovimientoController {
   @ApiBadRequestResponse({
     description: 'Solicitud incorrecta o datos inválidos.',
   })
-  create(@Body() createMovimientoRequestDto: CreateMovimientoRequestDto, @GetUser('userId') persona: number): Promise<MovimientoDTO> {
+  create(
+    @Body() createMovimientoRequestDto: CreateMovimientoRequestDto,
+    @GetUser('userId') userId: number
+  ): Promise<MovimientoDTO> {
+    createMovimientoRequestDto.userId = userId;
     return this.movimientoService.create(createMovimientoRequestDto);
   }
 
@@ -75,7 +80,7 @@ export class MovimientoController {
   @ApiNotFoundResponse({
     description: 'Movimiento no encontrado.',
   })
-  findOne(@Param('id',ParseIntPipe) id: number): Promise<MovimientoDTO> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<MovimientoDTO> {
     return this.movimientoService.findById(id);
   }
 

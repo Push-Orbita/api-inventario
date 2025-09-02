@@ -6,10 +6,10 @@ export class UpdateCategoriaRequestDto {
     @ApiProperty({ description: 'Nombre de la categoria', type: String, required: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
 
-    @ApiProperty({ description: 'Descripción de la Categoria' })
+    @ApiProperty({ description: 'Descripción de la Categoria', required: false })
     @IsString()
     @IsOptional()
-    descripcion: string;
+    descripcion?: string;
 }

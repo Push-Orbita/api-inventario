@@ -20,12 +20,12 @@ export class TipoRepository extends Repository<Tipo> {
 
 
         if (request.nombre) {
-            queryBuilder.andWhere('tipo.nombre LIKE :nombre', {
+            queryBuilder.andWhere('LOWER(tipo.nombre) LIKE LOWER(:nombre)', {
                 nombre: `%${request.nombre}%`,
             });
         }
         if (request.descripcion) {
-            queryBuilder.andWhere('tipo.descripcion LIKE :descripcion', {
+            queryBuilder.andWhere('LOWER(tipo.descripcion) LIKE LOWER(:descripcion)', {
                 descripcion: `%${request.descripcion}%`,
             });
         }

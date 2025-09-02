@@ -14,11 +14,11 @@ export class ModeloRepository extends Repository<Modelo> {
     }
 
     async search(request: SearchModeloRequestDto): Promise<PageDto<Modelo>> {
-
-        const queryBuilder: SelectQueryBuilder<Modelo> = this.dataSource.createQueryBuilder(Modelo, 'modelo')
+        const queryBuilder: SelectQueryBuilder<Modelo> = 
+            this.dataSource.createQueryBuilder(Modelo, 'modelo')
 
         if (request.nombre) {
-            queryBuilder.andWhere('modelo.nombre LIKE :nombre', {
+            queryBuilder.andWhere('LOWER(modelo.nombre) LIKE LOWER(:nombre)', {
                 nombre: `%${request.nombre}%`,
             });
         }
@@ -27,7 +27,6 @@ export class ModeloRepository extends Repository<Modelo> {
                 id: request.id,
             });
         }
-
 
         queryBuilder
             .orderBy('modelo.nombre', 'ASC')

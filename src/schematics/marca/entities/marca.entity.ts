@@ -6,7 +6,7 @@ import { Producto } from "src/schematics/producto/entities/producto.entity";
 @Entity({ name: 'inve_03_cab_marca' })
 export class Marca extends BaseEntity {
 
-    @Column({ name: 'inve03_nombre', unique: true, nullable: false })
+    @Column({ name: 'inve03_nombre', nullable: false, type: 'varchar', length: 255 })
     nombre: string;
 
     @OneToMany(() => Producto, (producto) => producto.marca)

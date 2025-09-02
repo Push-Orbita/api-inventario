@@ -16,17 +16,6 @@ export class SearchUnidadRequestDto extends BaseSearchDto {
   @IsOptional()
   codigo_com?: string;
 
-  @ApiProperty({ description: 'Código de barra asociado a la unidad', type: String, required: false })
-  @IsString()
-  @IsOptional()
-  cod_barra?: string;
-
-  @ApiProperty({ description: 'Fecha de adquisición', type: Date, required: false })
-  @IsDate()
-  @IsOptional()
-  @Type(() => Date)
-  fechaAdquisicion?: Date;
-
   @ApiProperty({ description: 'Estado actual de la unidad', enum: TipoEstadoEnum, required: false })
   @IsEnum(TipoEstadoEnum)
   @IsOptional()
@@ -42,13 +31,4 @@ export class SearchUnidadRequestDto extends BaseSearchDto {
   @IsOptional()
   ubicacion?: number;
 
-  @ApiProperty({ description: 'Cantidad de resultados a devolver', type: Number, required: false })
-  @IsNumber()
-  @IsOptional()
-  limit?: number;
-
-  @ApiProperty({ description: 'Cantidad de resultados a omitir', type: Number, required: false })
-  @IsNumber()
-  @IsOptional()
-  offset?: number;
 }

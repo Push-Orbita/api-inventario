@@ -36,7 +36,7 @@ export class UbicacionMapper {
   async createDTO2Entity(request: CreateUbicacionRequestDto): Promise<Ubicacion> {
     const newUbicacion: Ubicacion = new Ubicacion();
     newUbicacion.nombre = request.nombre;
-    newUbicacion.direccion = request.direccion;
+    newUbicacion.direccion = request.direccion ? request.direccion : null;
     return newUbicacion;
   }
 

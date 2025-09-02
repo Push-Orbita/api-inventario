@@ -6,5 +6,5 @@ export class UpdateModeloRequestDto {
     @ApiProperty({ description: 'Nombre del modelo', type: String, nullable: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
 }

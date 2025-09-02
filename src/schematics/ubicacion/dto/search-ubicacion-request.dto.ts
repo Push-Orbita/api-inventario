@@ -11,16 +11,16 @@ export class SearchUbicacionRequestDto extends BaseSearchDto {
     @IsNumber()
     @IsOptional()
     @Type(() => Number)
-    id: number;
+    id?: number;
 
     @ApiProperty({ description: 'Nombre de la ubicación a buscar', type: String, required: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
 
     @ApiProperty({ description: 'Dirección de la ubicación a buscar', required: false })
     @IsString()
     @IsOptional()
-    direccion: string;
+    direccion?: string;
 
 }

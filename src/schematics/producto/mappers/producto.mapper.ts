@@ -41,7 +41,7 @@ export class ProductoMapper {
   async createDTO2Entity(request: CreateProductoRequestDto): Promise<Producto> {
     const newProducto: Producto = new Producto();
     newProducto.nombre = request.nombre;
-    newProducto.caracteristicas = request.caracteristicas;
+    newProducto.caracteristicas = request.caracteristicas ? request.caracteristicas : null;
 
     newProducto.modelo = request.modelo !== undefined && request.modelo !== null
       ? Modelo.fromId(request.modelo)

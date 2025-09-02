@@ -6,5 +6,5 @@ export class UpdateMarcaRequestDto {
     @ApiProperty({ description: 'Nombre de la marca', type: String, required: false })
     @IsString()
     @IsOptional()
-    nombre: string;
+    nombre?: string;
 }

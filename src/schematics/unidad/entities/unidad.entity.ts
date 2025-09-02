@@ -8,16 +8,16 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 @Entity({ name: 'inve_06_det_unidad' })
 export class Unidad extends BaseEntity{
 
-    @Column({ name: 'inve06_numero_serie', unique: true, nullable: true })
+    @Column({ name: 'inve06_numero_serie', unique: true, nullable: true, type: 'varchar', length: 255 })
     numero_serie: string
 
-    @Column({ name: 'inve06_codigo', unique: true, nullable: true }) // de momento lo colamos como nullable
+    @Column({ name: 'inve06_codigo', unique: true, nullable: true, type: 'varchar', length: 100 }) // de momento lo colamos como nullable
     codigo_com: string
 
-    @Column({ name: 'inve06_cod_barra', unique: true, nullable: true })
+    @Column({ name: 'inve06_cod_barra', unique: true, nullable: true, type: 'varchar', length: 100 })
     cod_barra: string
 
-    @Column({ name: 'inve06_fecha_adquisicion' })
+    @Column({ name: 'inve06_fecha_adquisicion', type: 'datetime', nullable: true })
     fechaAdquisicion: Date;
 
     @Column({ name: 'inve06_estado', type: 'enum', enum: TipoEstadoEnum, nullable: false })

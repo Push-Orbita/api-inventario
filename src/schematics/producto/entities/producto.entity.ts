@@ -10,11 +10,11 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 @Entity({ name: 'inve_01_cab_producto' })
 export class Producto extends BaseEntity {
 
-    @Column({ name: 'inve01_nombre', unique: true, nullable: false })
+    @Column({ name: 'inve01_nombre', unique: true, nullable: false, type: 'varchar', length: 255 })
     nombre: string;
 
-    @Column({ name: 'inve01_caracteristicas', nullable: true })
-    caracteristicas: string;
+    @Column({ name: 'inve01_caracteristicas', nullable: true, type: 'varchar', length: 1000 })
+    caracteristicas: string | null;
 
     // RELACIONES:
 
@@ -40,6 +40,7 @@ export class Producto extends BaseEntity {
 
     // Unidad
     @OneToMany(() => Unidad, (unidad) => unidad.producto)
+    unidades: Unidad[];
 
     static fromId(id: number) {
         const producto = new Producto();

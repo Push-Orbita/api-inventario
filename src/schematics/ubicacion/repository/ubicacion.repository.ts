@@ -20,13 +20,13 @@ export class UbicacionRepository extends Repository<Ubicacion> {
 
 
         if (request.nombre) {
-            queryBuilder.andWhere('ubicacion.nombre LIKE :nombre', {
+            queryBuilder.andWhere('LOWER(ubicacion.nombre) LIKE LOWER(:nombre)', {
                 nombre: `%${request.nombre}%`,
             });
         }
 
         if (request.direccion) {
-            queryBuilder.andWhere('ubicacion.direccion LIKE :direccion', {
+            queryBuilder.andWhere('LOWER(ubicacion.direccion) LIKE LOWER(:direccion)', {
               direccion: `%${request.direccion}%`,
             });
           }
@@ -37,7 +37,6 @@ export class UbicacionRepository extends Repository<Ubicacion> {
             });
         }
 
-        queryBuilder.orderBy('ubicacion.nombre', 'ASC');
         queryBuilder.orderBy('ubicacion.id', 'DESC');
 
         const [list, count] = await queryBuilder

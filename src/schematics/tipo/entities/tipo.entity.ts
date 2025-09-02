@@ -6,11 +6,11 @@ import { Producto } from "src/schematics/producto/entities/producto.entity";
 @Entity({ name: 'inve_04_cab_tipo' })
 export class Tipo extends BaseEntity {
 
-    @Column({ name: 'inve04_nombre', unique: true, nullable: false })
+    @Column({ name: 'inve04_nombre', nullable: false, type: 'varchar', length: 255 })
     nombre: string;
 
-    @Column({ name: 'inve04_descripcion', nullable: true })
-    descripcion: string;
+    @Column({ name: 'inve04_descripcion', nullable: true, type: 'varchar', length: 500 })
+    descripcion: string | null;
 
     @OneToMany(() => Producto, (producto) => producto.tipo)
     productos: Producto[];
