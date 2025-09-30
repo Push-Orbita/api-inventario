@@ -5,6 +5,7 @@
 
 /.env
 /mysqldata
+/node_modules
 
 # Logs
 logs

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query, UseGuards } from '@nestjs/common';
 import { MovimientoService } from './movimiento.service';
 import { CreateMovimientoRequestDto } from './dto/create-movimiento-request.dto';
 import { UpdateMovimientoRequestDto } from './dto/update-movimiento-request.dto';
@@ -8,7 +8,8 @@ import { MovimientoDTO } from './dto/movimiento.dto';
 import { SearchMovimientoRequestDto } from './dto/search-movimiento-request.dto';
 import { PageDto } from 'src/common/dto/page.dto';
 import { plainToInstance } from 'class-transformer';
-import { GetUser } from 'src/common/decorators/user.decorator';
+import { GetUserId } from 'src/common/utils/auth-utils/decorators/get-user-id.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @ApiTags('Movimiento')
 @Controller('movimiento')
@@ -35,6 +36,7 @@ export class MovimientoController {
 
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Crear un nuevo movimiento',
@@ -53,7 +55,7 @@ export class MovimientoController {
   })
   create(
     @Body() createMovimientoRequestDto: CreateMovimientoRequestDto,
-    @GetUser('userId') userId: number
+    @GetUserId() userId: number
   ): Promise<MovimientoDTO> {
     createMovimientoRequestDto.userId = userId;
     return this.movimientoService.create(createMovimientoRequestDto);
