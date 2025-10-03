@@ -12,6 +12,7 @@ import { CategoriaModule } from './schematics/categoria/categoria.module';
 import { UbicacionModule } from './schematics/ubicacion/ubicacion.module';
 import { UnidadModule } from './schematics/unidad/unidad.module';
 import { MovimientoModule } from './schematics/movimiento/movimiento.module';
+import { HistorialUbicacionModule } from './schematics/historial-ubicacion/historial-ubicacion.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { MovimientoModule } from './schematics/movimiento/movimiento.module';
     CategoriaModule,
     UbicacionModule,
     UnidadModule,
-    MovimientoModule
+    MovimientoModule,
+    HistorialUbicacionModule
   ],
   controllers: [],
   providers: [],

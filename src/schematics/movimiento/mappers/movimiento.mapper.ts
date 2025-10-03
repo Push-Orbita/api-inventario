@@ -28,7 +28,7 @@ export class MovimientoMapper {
     );
 
     const pageDto = new PageDto<MovimientoDTO>(dtos, page.metadata.count);
-    pageDto.metadata.setPaginationData(1, 10); // Puedes ajustar esto si usas `request.limit` y `offset`
+    pageDto.metadata.setPaginationData(1, 10);
     pageDto.metadata.sortBy = request.sortBy;
 
     return pageDto;
@@ -40,6 +40,7 @@ export class MovimientoMapper {
     movimiento.fecha = request.fecha;
     movimiento.operacion = request.operacion;
     movimiento.detalle = request.detalle;
+    movimiento.confirmado = request.confirmado || null;
     movimiento.unidad = Unidad.fromId(request.unidad);
     return movimiento;
   }
@@ -67,6 +68,10 @@ export class MovimientoMapper {
 
     if (request.unidad !== undefined && request.unidad !== null) {
       movimiento.unidad = Unidad.fromId(request.unidad);
+    }
+
+    if (request.confirmado !== undefined && request.confirmado !== null) {
+      movimiento.confirmado = request.confirmado;
     }
 
     return movimiento;

@@ -6,11 +6,12 @@ import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
 @Entity({ name: 'inve_08_mov_movimiento' })
 export class Movimiento extends BaseEntity {
 
-  // ID DE AUTH
+  // ID DE AUTH: usuario que registra el movimiento
   @Column({ name: 'user_auth_id', type: 'integer' })
   user: number;
 
-  @Column({ name: 'inve08_persona', nullable: false, type: 'integer' })
+  // ID DE PERSONA: persona que realiza el movimiento
+  @Column({ name: 'id_persona', nullable: false, type: 'integer' })
   persona: number;
 
   // Fecha de movimiento
@@ -24,6 +25,10 @@ export class Movimiento extends BaseEntity {
   // Detalle
   @Column({ name: 'inve08_detalle', nullable: true, type: 'varchar', length: 500 })
   detalle: string;
+
+  // Confirmación de recepción (solo para operaciones CEDIÓ)
+  @Column({ name: 'inve08_confirmado', nullable: true, type: 'boolean' })
+  confirmado: boolean | null;
 
   // Unidad
   @ManyToOne(() => Unidad)

@@ -33,4 +33,12 @@ export class MovimientoDTO extends CommonDTO {
   @Expose()
   detalle: string;
 
+  @ApiProperty({ 
+    description: 'Confirmación de recepción (solo para operaciones CEDIÓ)', 
+    type: Boolean,
+    nullable: true
+  })
+  @Expose()
+  confirmado: boolean | null;
+
 }

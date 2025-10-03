@@ -1,6 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query, UseGuards } from '@nestjs/common';
 import { MovimientoService } from './movimiento.service';
+import { MovimientoBulkService } from './services/movimiento-bulk.service';
 import { CreateMovimientoRequestDto } from './dto/create-movimiento-request.dto';
+import { CreateBulkMovimientosRequestDto } from './dto/create-bulk-movimientos-request.dto';
+import { ConfirmarMovimientoRequestDto } from './dto/confirmar-movimiento-request.dto';
 import { UpdateMovimientoRequestDto } from './dto/update-movimiento-request.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
@@ -15,7 +18,10 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 @Controller('movimiento')
 export class MovimientoController {
 
-  constructor(private readonly movimientoService: MovimientoService) { }
+  constructor(
+    private readonly movimientoService: MovimientoService,
+    private readonly movimientoBulkService: MovimientoBulkService
+  ) { }
 
   @Get('search')
   @ApiOperation({
@@ -138,5 +144,82 @@ export class MovimientoController {
   })
   remove(@Param('id') id: string) {
     return this.movimientoService.remove(+id);
+  }
+
+  @Post('bulk')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Crear múltiples movimientos en lote',
+    description: 'Permite registrar múltiples movimientos de unidades en una sola operación.',
+  })
+  @ApiBody({
+    type: CreateBulkMovimientosRequestDto,
+    description: 'Datos para crear múltiples movimientos.',
+  })
+  @ApiOkResponse({
+    type: [MovimientoDTO],
+    description: 'Movimientos creados correctamente.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Solicitud incorrecta o datos inválidos.',
+  })
+  async createBulk(
+    @Body() createBulkMovimientosDto: CreateBulkMovimientosRequestDto,
+    @GetUserId() userId: number
+  ): Promise<MovimientoDTO[]> {
+    createBulkMovimientosDto.userId = userId;
+    const movimientos = await this.movimientoBulkService.crearMovimientosEnLote(createBulkMovimientosDto);
+    return this.movimientoService.mapEntitiesToDTOs(movimientos);
+  }
+
+  @Patch(':id/confirmar')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Confirmar un movimiento de cesión',
+    description: 'Permite confirmar o rechazar la recepción de un movimiento de tipo CEDIÓ.',
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'ID del movimiento a confirmar.',
+  })
+  @ApiBody({
+    type: ConfirmarMovimientoRequestDto,
+    description: 'Datos de confirmación del movimiento.',
+  })
+  @ApiOkResponse({
+    type: MovimientoDTO,
+    description: 'Movimiento confirmado correctamente.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Solicitud incorrecta o movimiento no válido para confirmación.',
+  })
+  @ApiNotFoundResponse({
+    description: 'Movimiento no encontrado.',
+  })
+  async confirmarMovimiento(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() confirmarMovimientoDto: ConfirmarMovimientoRequestDto
+  ): Promise<MovimientoDTO> {
+    const movimiento = await this.movimientoBulkService.confirmarMovimiento(id, confirmarMovimientoDto.confirmado);
+    return this.movimientoService.entity2DTO(movimiento);
+  }
+
+  @Get('pendientes-confirmacion')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Obtener movimientos pendientes de confirmación',
+    description: 'Obtiene todos los movimientos de tipo CEDIÓ que están pendientes de confirmación.',
+  })
+  @ApiOkResponse({
+    type: [MovimientoDTO],
+    description: 'Lista de movimientos pendientes de confirmación.',
+  })
+  async getMovimientosPendientesConfirmacion(): Promise<MovimientoDTO[]> {
+    const movimientos = await this.movimientoBulkService.obtenerMovimientosPendientesConfirmacion();
+    return this.movimientoService.mapEntitiesToDTOs(movimientos);
   }
 }

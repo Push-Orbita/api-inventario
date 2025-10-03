@@ -151,4 +151,14 @@ export class MovimientoService {
       throw new BadRequestException(`Error al buscar movimientos: ${error.message}`);
     }
   }
+
+  public async entity2DTO(movimiento: any): Promise<MovimientoDTO> {
+    return await this.movimientoMapper.entity2DTO(movimiento);
+  }
+
+  public async mapEntitiesToDTOs(movimientos: any[]): Promise<MovimientoDTO[]> {
+    return await Promise.all(
+      movimientos.map(movimiento => this.movimientoMapper.entity2DTO(movimiento))
+    );
+  }
 }

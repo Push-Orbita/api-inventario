@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsString, IsOptional, IsBoolean } from "class-validator";
 import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
 
-export class CreateMovimientoRequestDto {
+export class CreateBulkMovimientosRequestDto {
 
     userId: number;
 
@@ -17,10 +17,15 @@ export class CreateMovimientoRequestDto {
     @Type(() => Date)
     fecha: Date;
 
-    @ApiProperty({ description: 'ID de la Unidad', type: Number })
-    @IsNumber()
-    unidad: number; 
-
+    @ApiProperty({ 
+        description: 'Array de IDs de las Unidades', 
+        type: [Number],
+        example: [101, 102, 103]
+    })
+    @IsArray()
+    @IsNumber({}, { each: true })
+    @IsNotEmpty()
+    unidades: number[];
 
     @ApiProperty({
         description: 'Tipo de la operacion',
@@ -42,5 +47,4 @@ export class CreateMovimientoRequestDto {
     @IsOptional()
     @IsBoolean()
     confirmado?: boolean;
-
 }

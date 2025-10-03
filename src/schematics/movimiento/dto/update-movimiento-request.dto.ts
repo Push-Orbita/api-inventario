@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDate, IsEnum, IsNumber, IsOptional, IsString, IsBoolean } from "class-validator";
 import { TipoOperacionEnum } from "src/common/enums/tipo-operacion.enum";
 
 export class UpdateMovimientoRequestDto {
@@ -35,4 +35,13 @@ export class UpdateMovimientoRequestDto {
   @IsString()
   @IsOptional()
   detalle?: string;
+
+  @ApiProperty({ 
+    description: 'Confirmación de recepción (solo para operaciones CEDIÓ)', 
+    type: Boolean,
+    required: false
+  })
+  @IsOptional()
+  @IsBoolean()
+  confirmado?: boolean;
 }
