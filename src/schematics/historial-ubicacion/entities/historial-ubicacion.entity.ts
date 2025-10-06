@@ -16,7 +16,7 @@ export class HistorialUbicacion extends BaseEntity {
 
   // Motivo del cambio de ubicación
   @Column({ name: 'inve09_motivo', nullable: true, type: 'varchar', length: 500 })
-  motivo: string;
+  motivo: string | null;
 
   // Ubicación anterior (nullable para la primera ubicación)
   @ManyToOne(() => Ubicacion, { nullable: true })

@@ -21,6 +21,10 @@ export class CreateMovimientoRequestDto {
     @IsNumber()
     unidad: number; 
 
+    @ApiProperty({ description: 'ID de la Ubicación destino', type: Number, required: false })
+    @IsNumber()
+    @IsOptional()
+    ubicacionDestino?: number;
 
     @ApiProperty({
         description: 'Tipo de la operacion',

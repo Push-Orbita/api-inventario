@@ -8,11 +8,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MovimientoRepository } from './repository/movimiento.repository';
 import { MovimientoMapper } from './mappers/movimiento.mapper';
 import { UnidadModule } from '../unidad/unidad.module';
+import { HistorialUbicacionModule } from '../historial-ubicacion/historial-ubicacion.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Movimiento, Unidad]),
-    UnidadModule
+    UnidadModule,
+    HistorialUbicacionModule
   ],
   controllers: [MovimientoController],
   providers: [MovimientoService, MovimientoBulkService, MovimientoRepository, MovimientoMapper],

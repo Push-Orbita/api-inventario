@@ -67,6 +67,31 @@ export class MovimientoController {
     return this.movimientoService.create(createMovimientoRequestDto);
   }
 
+  @Post('con-asignacion-inicial')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Crear movimiento con asignación inicial de ubicación',
+    description: 'Permite registrar un movimiento y asignar la ubicación inicial a una unidad (útil para unidades nuevas).',
+  })
+  @ApiBody({
+    type: CreateMovimientoRequestDto,
+    description: 'Datos del nuevo movimiento con ubicación destino.',
+  })
+  @ApiOkResponse({
+    type: MovimientoDTO,
+    description: 'Movimiento creado con asignación de ubicación correctamente.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Solicitud incorrecta o datos inválidos.',
+  })
+  createConAsignacionInicial(
+    @Body() createMovimientoRequestDto: CreateMovimientoRequestDto,
+    @GetUserId() userId: number
+  ): Promise<MovimientoDTO> {
+    createMovimientoRequestDto.userId = userId;
+    return this.movimientoService.createConAsignacionInicial(createMovimientoRequestDto);
+  }
 
   @Get(':id')
   @ApiOperation({
