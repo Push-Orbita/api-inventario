@@ -25,10 +25,6 @@ export class CreateUnidadRequestDto {
   @IsNumber()
   producto: number;
 
-  @ApiProperty({ description: 'ID de la Ubicacion', type: Number })
-  @IsNumber()
-  ubicacion: number;
-
   @ApiProperty({
     description: 'Estado actual de la unidad',
     enum: TipoEstadoEnum,

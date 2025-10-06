@@ -9,7 +9,6 @@ import { UpdateUnidadRequestDto } from '../dto/update-unidad-request.dto';
 import { SearchUnidadRequestDto } from '../dto/search-unidad-request.dto';
 
 import { Producto } from 'src/schematics/producto/entities/producto.entity';
-import { Ubicacion } from 'src/schematics/ubicacion/entities/ubicacion.entity';
 
 @Injectable()
 export class UnidadMapper {
@@ -45,7 +44,7 @@ export class UnidadMapper {
         newUnidad.numero_serie = request.numero_serie;
         newUnidad.cod_barra = request.cod_barra;
         newUnidad.estado = request.estado;
-        newUnidad.ubicacion = Ubicacion.fromId(request.ubicacion);
+        // La ubicación se maneja a través del historial de ubicaciones
         return newUnidad;
     }
 
@@ -56,7 +55,7 @@ export class UnidadMapper {
         request.numero_serie ? (editUnidad.numero_serie = request.numero_serie) : null;
         request.cod_barra ? (editUnidad.cod_barra = request.cod_barra) : null;
         request.estado ? (editUnidad.estado = request.estado) : null;
-        request.ubicacion ? (editUnidad.ubicacion = Ubicacion.fromId(request.ubicacion)) : null;
+        // La ubicación se maneja a través del historial de ubicaciones
         return editUnidad;
     }
 }

@@ -29,7 +29,7 @@ export class HistorialUbicacion extends BaseEntity {
   ubicacionNueva: Ubicacion;
 
   // Unidad
-  @ManyToOne(() => Unidad)
+  @ManyToOne(() => Unidad, (unidad) => unidad.historialUbicaciones)
   @JoinColumn({ name: 'rela_inve06' })
   unidad: Unidad;
 

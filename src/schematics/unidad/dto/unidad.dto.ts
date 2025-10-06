@@ -3,7 +3,7 @@ import { Expose, Type } from "class-transformer";
 import { CommonDTO } from "src/common/dto/common.dto";
 
 import { ProductoDTO } from "src/schematics/producto/dto/producto.dto";
-import { UbicacionDTO } from "src/schematics/ubicacion/dto/ubicacion.dto";
+import { HistorialUbicacionDTO } from "src/schematics/historial-ubicacion/dto/historial-ubicacion.dto";
 
 import { TipoEstadoEnum } from 'src/common/enums/tipo-estado.enum';
 
@@ -35,9 +35,9 @@ export class UnidadDTO extends CommonDTO {
   @Expose()
   producto: ProductoDTO;
 
-  @ApiProperty({ description: 'ID de la Ubicacion', type: () => UbicacionDTO })
-  @Type(() => UbicacionDTO)
+  @ApiProperty({ description: 'Historial de ubicaciones de la unidad', type: () => [HistorialUbicacionDTO] })
+  @Type(() => HistorialUbicacionDTO)
   @Expose()
-  ubicacion: UbicacionDTO;
+  historialUbicaciones: HistorialUbicacionDTO[];
   
 }

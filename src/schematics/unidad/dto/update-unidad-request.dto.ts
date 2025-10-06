@@ -31,11 +31,6 @@ export class UpdateUnidadRequestDto {
     @IsOptional()
     producto?: number;
 
-    @ApiProperty({ description: 'ID de la Ubicacion', type: Number, required: false })
-    @IsNumber()
-    @IsOptional()
-    ubicacion?: number;
-
     @ApiProperty({
         description: 'Estado actual de la unidad',
         enum: TipoEstadoEnum,

@@ -2,7 +2,7 @@ import { BaseEntity } from "src/common/models/baseEntity";
 import { TipoEstadoEnum } from "src/common/enums/tipo-estado.enum";
 import { Movimiento } from "src/schematics/movimiento/entities/movimiento.entity";
 import { Producto } from "src/schematics/producto/entities/producto.entity";
-import { Ubicacion } from "src/schematics/ubicacion/entities/ubicacion.entity";
+import { HistorialUbicacion } from "src/schematics/historial-ubicacion/entities/historial-ubicacion.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity({ name: 'inve_06_det_unidad' })
@@ -30,10 +30,9 @@ export class Unidad extends BaseEntity{
     @JoinColumn({ name: 'rela_inve01' })
     producto: Producto;
 
-    // Ubicacion
-    @ManyToOne(() => Ubicacion)
-    @JoinColumn({ name: 'rela_inve07' })
-    ubicacion: Ubicacion;
+    // Historial de Ubicaciones
+    @OneToMany(() => HistorialUbicacion, (historial) => historial.unidad)
+    historialUbicaciones: HistorialUbicacion[];
 
     // Movimientos
     @OneToMany(() => Movimiento, (movimiento) => movimiento.unidad)

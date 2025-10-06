@@ -62,7 +62,10 @@ export class UnidadService {
         where: { id: id },
         relations: {
           producto: true,
-          ubicacion: true,
+          historialUbicaciones: {
+            ubicacionNueva: true,
+            ubicacionAnterior: true
+          },
         },
       });
       if (!unidad) {
